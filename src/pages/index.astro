@@ -6,7 +6,7 @@ import Layout from '../layouts/Layout.astro';
 // ── Latest log entries ────────────────────────────────────────────────────────
 // Replace these with real entries as you write them.
 const logEntries = [
-  { date: "Jun 1",  title: "June — Run at least 2 miles every day",               tag: "Run",      tagColor: "green"  },
+  { date: "June",  title: "Run at least 2 miles every day",               tag: "Run",  tagColor: "green"  },
   /*{ date: "Jun 3",  title: "Morning physio + zone 2 cycling block",                tag: "Recovery", tagColor: "teal"   },*/
   /*{ date: "May 28", title: "New study: airway clearance techniques in runners",     tag: "Lab",      tagColor: "orange" },*/
 ];
@@ -15,17 +15,17 @@ const logEntries = [
 const pillars = [
   {
     num: "01",
-    label: "Inspiration",
+    label: "Physical Baseline",
     title: "The Engine Room",
-    desc:  "Personal training logs, race reports, and real athletic data. Watching someone go from 0 to ultra — lungs and all — week by week.",
+    desc:  "This is the place where you can follow along to use physical activity to put your baseline as high as possible. Here you will also find my journey to develop the strongest body I can get to.",
     href:  "/engine-room",
-    cta:   "Training Logs",
+    cta:   "Aspiring Athlete",
   },
   {
     num: "02",
     label: "Science",
     title: "The Lab",
-    desc:  "Clinical studies, new research, and expert insight. Everything worth knowing about bronchiectasis — from diagnosis to the frontier of treatment.",
+    desc:  "Clinical studies, new research, and expert insight. Everything worth knowing about bronchiectasis. From diagnosis to the frontier of treatment. Know your oppenent, come out stronger.",
     href:  "/lab",
     cta:   "Research",
   },
@@ -33,7 +33,7 @@ const pillars = [
     num: "03",
     label: "Daily life",
     title: "Lifestyle Hub",
-    desc:  "Nutrition, hydration, air quality, sleep, and daily routines built around a lung condition. Small changes that add up to real energy.",
+    desc:  "Nutrition, hydration, air quality, sleep, and routines built around a lung condition. Managing bronchiectasis happens in the daily choices we make. Here, we focus on the practical, small changes you can control that compound over time to improve your lung health, protect your body, and deliver real energy. ",
     href:  "/lifestyle",
     cta:   "Routines",
   },
@@ -41,13 +41,13 @@ const pillars = [
     num: "04",
     label: "Community",
     title: "Basecamp",
-    desc:  "Discord, Strava, community spotlights. A place to find people who get it — and maybe train alongside them.",
+    desc:  "Connect with others through, Discord, Strava, and Reddit. This is a place to find people who get it, maybe train alongside them, and learn from what may be working for others.",
     href:  "/basecamp",
-    cta:   "Join",
+    cta:   "Explore",
   },
 ];
 
-const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&nbsp; BRONCHIECTASIS DOESN'T FINISH YOU &nbsp;·&nbsp; IT JUST CHANGES THE STARTING LINE &nbsp;·&nbsp;";
+const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&nbsp; BRONCHIECTASIS DOESN'T FINISH YOU &nbsp;·&nbsp; IT JUST CHANGES THE STARTING LINE &nbsp;·&nbsp; HOW FAR WILL YOU GO? &nbsp;·&nbsp;";
 ---
 
 <Layout title="Home">
@@ -93,17 +93,20 @@ const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&n
   ══════════════════════════════════════════════════════════ -->
   <section class="hero" aria-labelledby="hero-heading">
 
-    <p class="hero-eyebrow">Bronchiectasis · Aspiring Athlete · Weekend Adventurer</p>
+    <p class="hero-eyebrow">Bronchiectasis · Aspiring Athlete · Living Fully</p>
 
     <h1 id="hero-heading" class="hero-headline">
       The <em>lungs</em> they said would slow you down.
     </h1>
 
     <p class="hero-sub">
-      One diagnosis. One decision to not let this be a slow down. Training logs,
-      science, lifestyle tools, inspiration, and a community for people who refuse
-      to let a chronic lung condition define their limits.
-    </p>
+      One diagnosis. One decision to not let this be a slow down. Focus on maximizing life.
+	  Taking care of your health through training, science, lifestyle tools, inspiration, 
+	  and a community for people who refuse to let a chronic lung condition define their limits.
+	  </br>
+	  </br>
+	  <strong>This platform is for informational purposes only. For medical advice or diagnosis, consult a professional.</strong>
+	</p>
 
     <div class="hero-ctas">
       <a href="/start-here" class="btn btn-primary">Start Here ↗</a>
@@ -132,6 +135,10 @@ const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&n
   <div class="divider-ticker" aria-hidden="true">
     <div class="ticker-track">
       <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
+      <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
+      <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
+      <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
+	  <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
       <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
       <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
       <span>THE ENGINE ROOM &nbsp;·&nbsp; THE LAB &nbsp;·&nbsp; THE LIFESTYLE HUB &nbsp;·&nbsp; BASECAMP &nbsp;·&nbsp; </span>
@@ -196,9 +203,10 @@ const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&n
         Your diagnosis<br>is the start line.
       </h2>
       <p class="tagline-sub">
-        BX Ultra is built on one idea: that chronic lung disease and
-        athletic ambition are not opposites. We aim to maximize our 
-		fitness, daily quality of life, and seek adventure.
+        BX Ultra is built on one core belief: chronic lung disease 
+		and athletic ambition are not opposites. Together, we aim 
+		to maximize our fitness, optimize our daily quality of life, 
+		and chase adventure. Let's live fully.
       </p>
       <a href="/start-here" class="btn btn-forest">Begin the journey →</a>
     </div>
@@ -405,7 +413,7 @@ const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&n
     text-transform: uppercase;
     letter-spacing: -0.01em;
     color: var(--cream);
-    max-width: 560px;
+    max-width: 800px;
     margin-bottom: 1.75rem;
   }
   .hero-headline em {
@@ -418,8 +426,14 @@ const tickerText = "BREATHE &nbsp;·&nbsp; PUSH &nbsp;·&nbsp; REPEAT &nbsp;·&n
     font-size: 16px;
     line-height: 1.65;
     color: var(--cream80);
-    max-width: 440px;
+    max-width: 650px;
     margin-bottom: 2.25rem;
+  }
+
+  .hero-sub :global(strong) {
+    color: var(--orange) !important;
+    font-weight: 800;     
+    font-size: 18px;
   }
 
   /* CTA buttons */
