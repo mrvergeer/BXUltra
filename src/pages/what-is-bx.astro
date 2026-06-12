@@ -1,0 +1,839 @@
+---
+// src/pages/what-is-bx.astro
+// BX Ultra — "What is Bronchiectasis?" reference page
+// Structure: Nav → Hero → Key facts strip → TOC sidebar + article body → Go deeper CTA → Footer
+//
+// CONTENT NOTE: All medical copy below is an accurate layperson's summary based on
+// established clinical understanding of bronchiectasis. Review every section personally
+// and update it with your own experience and any newer research from The Lab.
+// Add citations/links to studies as you populate The Lab.
+//
+import Layout from '../layouts/Layout.astro';
+
+// ── Table of contents — drives sidebar links and section IDs ─────────────────
+const toc = [
+  { id: "what-is-it",   label: "What is it?"          },
+  { id: "how-airways",  label: "How airways work"      },
+  { id: "symptoms",     label: "Symptoms"              },
+  { id: "causes",       label: "Causes"                },
+  { id: "diagnosis",    label: "Diagnosis"             },
+  { id: "treatment",    label: "Treatment"             },
+  { id: "exercise",     label: "Exercise & BX"         },
+  { id: "living-with",  label: "Living with BX"        },
+];
+
+// ── Key facts — edit as needed ────────────────────────────────────────────────
+const keyFacts = [
+  { value: "~1 in 1,000", label: "Adults affected in Europe"                      },
+  { value: "Lifelong",    label: "Not curable, but manageable"         },
+  { value: "2–3×",        label: "More common in women than men"                   },
+  { value: "Many years",  label: "Average time to diagnosis after first symptoms"  },
+];
+---
+
+<Layout
+  title="What is Bronchiectasis?"
+  description="A plain-language guide to bronchiectasis. What it is, how it works, symptoms, causes, diagnosis, treatment, and what exercise and an active life actually look like with BX."
+>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main">
+      <a href="/engine-room">Engine Room</a>
+      <a href="/lab">The Lab</a>
+      <a href="/lifestyle">Lifestyle Hub</a>
+      <a href="/basecamp">Basecamp</a>
+      <a href="/what-is-bx" class="nav-pill nav-pill--active">What is BX?</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="page-hero" aria-labelledby="page-heading">
+    <div class="container">
+      <p class="page-eyebrow">Bronchiectasis 101</p>
+      <h1 id="page-heading" class="page-headline">
+        What is<br><em>Bronchiectasis?</em>
+      </h1>
+      <p class="page-sub">
+        A plain language guide to the disease, written for people who just
+        received a diagnosis, people supporting someone who has, and athletes
+        / adventurers trying to understand what their airways are actually doing.
+        No jargon gatekeeping. Always showing the science.
+      </p>
+
+      <!-- Quick-jump chips (TOC sidebar is hidden on mobile) -->
+      <nav class="hero-chips" aria-label="Jump to section">
+        {toc.map(item => (
+          <a href={`#${item.id}`} class="chip">{item.label}</a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="hero-rule" aria-hidden="true">
+      <span class="rule-line"></span>
+      <span class="rule-dot"></span>
+      <span class="rule-line"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       KEY FACTS STRIP
+  ══════════════════════════════════════════════════════════ -->
+  <div class="facts-strip" role="region" aria-label="Key facts about bronchiectasis">
+    <div class="container facts-grid">
+      {keyFacts.map(f => (
+        <div class="fact-item">
+          <span class="fact-value">{f.value}</span>
+          <span class="fact-label">{f.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MAIN CONTENT — sticky TOC sidebar + article
+  ══════════════════════════════════════════════════════════ -->
+  <div class="content-wrapper">
+    <div class="container content-grid">
+
+      <!-- ── STICKY SIDEBAR ───────────────────────────────── -->
+      <aside class="toc-sidebar" aria-label="Page contents">
+        <p class="toc-heading">On this page</p>
+        <nav>
+          <ol class="toc-list" role="list">
+            {toc.map(item => (
+              <li>
+                <a href={`#${item.id}`} class="toc-link">{item.label}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <div class="toc-divider" aria-hidden="true"></div>
+        <a href="/lab" class="toc-lab-link">
+          <span class="toc-lab-icon" aria-hidden="true">⚗</span>
+          Deeper research<br>in The Lab →
+        </a>
+      </aside>
+
+      <!-- ── ARTICLE BODY ──────────────────────────────────── -->
+      <article class="article-body">
+
+        <!-- ── 01 What is it? ──────────────────────────────── -->
+        <section id="what-is-it" class="content-section" aria-labelledby="h-what">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">01</span>
+            <h2 id="h-what" class="content-heading">What is it?</h2>
+          </div>
+          <p>
+            Bronchiectasis (pronounced <em>brong-kee-EK-tuh-sis</em>) is a chronic lung
+            condition in which the airways (the bronchi and bronchioles that carry air
+            in and out of the lungs) become permanently widened, scarred, and thickened.
+            The medical term for this widening is <strong>dilation</strong>, and once it
+            happens, it cannot be reversed.
+          </p>
+          <p>
+            Healthy airways are designed to move mucus efficiently out of the lungs.
+            In bronchiectasis, the damaged airway walls lose this ability. Mucus
+            accumulates, bacteria colonise the pooled secretions, and a cycle begins:
+            infection leads to more inflammation, more inflammation leads to more
+            structural damage, and more damage leads to further loss of function.
+          </p>
+          <p>
+            This cycle is sometimes called the <strong>vicious cycle of bronchiectasis</strong>, 
+            and is the central mechanism that disease management aims to interrupt.
+            The condition is <strong>not curable</strong>, but it is highly manageable, and 
+            the range of outcomes between people who actively manage it and those who don't is
+            significant.
+          </p>
+          <div class="callout callout--info">
+            <span class="callout-icon" aria-hidden="true">💡</span>
+            <div>
+              <strong>BX is not COPD or asthma</strong> Though it is sometimes confused
+              with both. It has distinct mechanisms, distinct management strategies, and a
+              different trajectory. If you've been told you "just have a chest problem,"
+              it's worth understanding the specific diagnosis carefully.
+            </div>
+          </div>
+        </section>
+
+        <!-- ── 02 How airways work ─────────────────────────── -->
+        <section id="how-airways" class="content-section" aria-labelledby="h-airways">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">02</span>
+            <h2 id="h-airways" class="content-heading">How the airways work</h2>
+          </div>
+          <p>
+            The lungs are not simple bags of air. They're a branching tree of increasingly
+            small tubes. From the trachea, to two main bronchi, branching into smaller
+            bronchi, then bronchioles, and finally into millions of tiny air sacs called
+            alveoli, where gas exchange actually happens.
+          </p>
+          <p>
+            The inner surface of healthy airways is lined with tiny hair-like structures
+            called <strong>cilia</strong>, which beat in coordinated waves to move mucus
+            up and out. This is a mechanism called <strong>mucociliary clearance</strong>. 
+            Think of it as a conveyor belt that continuously sweeps debris, pathogens, and
+            excess mucus toward the throat where it can be cleared.
+          </p>
+          <p>
+            In bronchiectasis, repeated cycles of infection and inflammation damage both
+            the structural walls of the airways and the cilia themselves. The airways
+            dilate and lose their elasticity. Mucus pools in the lower sections of the
+            widened tubes. The conveyor belt slows, creating environments where bacteria
+            thrive and further damage accumulates.
+          </p>
+
+          <!-- Airway comparison diagram -->
+          <figure class="diagram" aria-label="Diagram comparing healthy and bronchiectatic airways">
+            <div class="diagram-panels">
+              <div class="diagram-panel">
+                <p class="diagram-label diagram-label--green">Healthy airway</p>
+                <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="airway-svg">
+                  <rect x="52" y="10"  width="56" height="140" rx="28" fill="none" stroke="#1E3F20" stroke-width="3"/>
+                  <rect x="62" y="20"  width="36" height="120" rx="18" fill="#EAF3DE"/>
+                  <line x1="62" y1="28" x2="58" y2="20" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="68" y1="26" x2="66" y2="18" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="74" y1="24" x2="74" y2="16" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="80" y1="24" x2="82" y2="16" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="86" y1="26" x2="90" y2="18" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="92" y1="28" x2="98" y2="20" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="62" y1="132" x2="58" y2="140" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="68" y1="134" x2="66" y2="142" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="74" y1="136" x2="74" y2="144" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="80" y1="136" x2="82" y2="144" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="86" y1="134" x2="90" y2="142" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="92" y1="132" x2="98" y2="140" stroke="#1E3F20" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="80" y1="45" x2="80" y2="115" stroke="#1E3F20" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"/>
+                  <polygon points="80,42 76,50 84,50" fill="#1E3F20"/>
+                </svg>
+                <p class="diagram-caption">Narrow, elastic walls. Cilia intact. Mucus clears freely.</p>
+              </div>
+              <div class="diagram-panel">
+                <p class="diagram-label diagram-label--orange">Bronchiectatic airway</p>
+                <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="airway-svg">
+                  <path d="M 38 10 Q 30 80 38 150 L 122 150 Q 130 80 122 10 Z" fill="none" stroke="#E65C00" stroke-width="3"/>
+                  <path d="M 50 20 Q 44 80 50 140 L 110 140 Q 116 80 110 20 Z" fill="#FEF0E6"/>
+                  <ellipse cx="80" cy="128" rx="30" ry="14" fill="rgba(230,92,0,0.18)" stroke="#E65C00" stroke-width="1"/>
+                  <text x="80" y="132" text-anchor="middle" font-size="9" fill="#E65C00" font-family="sans-serif">pooled mucus</text>
+                  <line x1="54" y1="28" x2="52" y2="21" stroke="#E65C00" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="72" y1="24" x2="74" y2="17" stroke="#E65C00" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="104" y1="28" x2="106" y2="21" stroke="#E65C00" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="40"  cy="60"  r="3" fill="rgba(230,92,0,0.35)"/>
+                  <circle cx="38"  cy="95"  r="4" fill="rgba(230,92,0,0.35)"/>
+                  <circle cx="120" cy="70"  r="3" fill="rgba(230,92,0,0.35)"/>
+                  <circle cx="122" cy="105" r="4" fill="rgba(230,92,0,0.35)"/>
+                </svg>
+                <p class="diagram-caption">Dilated, inelastic walls. Cilia damaged. Mucus accumulates.</p>
+              </div>
+            </div>
+            <figcaption class="diagram-figcaption">Simplified cross-section comparison. Not to clinical scale.</figcaption>
+          </figure>
+        </section>
+
+        <!-- ── 03 Symptoms ────────────────────────────────── -->
+        <section id="symptoms" class="content-section" aria-labelledby="h-symptoms">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">03</span>
+            <h2 id="h-symptoms" class="content-heading">Symptoms</h2>
+          </div>
+          <p>
+            Symptoms vary considerably between individuals — some people have mild BX
+            that is largely asymptomatic outside of exacerbations; others experience
+            significant daily burden. The most common:
+          </p>
+          <div class="symptom-grid">
+            <div class="symptom-card symptom-card--primary">
+              <span class="symptom-icon" aria-hidden="true">💨</span>
+              <h3>Chronic productive cough</h3>
+              <p>The most consistent symptom. Daily coughing that brings up mucus (sputum), often worse in the mornings. Volume and colour are useful indicators of stability or infection.</p>
+            </div>
+            <div class="symptom-card">
+              <span class="symptom-icon" aria-hidden="true">😮‍💨</span>
+              <h3>Breathlessness</h3>
+              <p>Ranges from exertional only (on hard effort) to present at rest in more advanced cases. Exercise capacity tends to be reduced, though it is trainable.</p>
+            </div>
+            <div class="symptom-card">
+              <span class="symptom-icon" aria-hidden="true">🫁</span>
+              <h3>Chest tightness or wheeze</h3>
+              <p>Caused by narrowed, inflamed airways. May be mistaken for asthma. Can fluctuate with infection or activity level.</p>
+            </div>
+            <div class="symptom-card">
+              <span class="symptom-icon" aria-hidden="true">🔥</span>
+              <h3>Exacerbations</h3>
+              <p>Periods of acute worsening. Usually more sputum, worse breathlessness, fatigue, sometimes fever. Typically triggered by respiratory infections. Frequency varies widely.</p>
+            </div>
+            <div class="symptom-card">
+              <span class="symptom-icon" aria-hidden="true">😴</span>
+              <h3>Fatigue</h3>
+              <p>Often underestimated. Chronic inflammation, disturbed sleep from coughing, and the physical work of breathing all contribute to persistent tiredness.</p>
+            </div>
+            <div class="symptom-card">
+              <span class="symptom-icon" aria-hidden="true">🩸</span>
+              <h3>Haemoptysis</h3>
+              <p>Coughing up blood. Can range from blood-streaked sputum (common) to larger bleeds (less common). Always worth reporting to your clinical team.</p>
+            </div>
+          </div>
+          <div class="callout callout--personal">
+            <span class="callout-icon" aria-hidden="true">🏃</span>
+            <div>
+              <strong>From personal experience:</strong> Fatigue is a major factor for me.
+              In general there is not a "one-size-fits-all" solution to managing BX. You will
+              have to explore what helps you. If find that there are a few factors that have
+              a major influence on how I feel, and how my physical exertion feels. For me, I 
+              need to: </br></br>
+              <li><strong>Sleep enough every night</strong> 
+              Short sleep immediately increases mucus production, makes me feel more tired 
+              and demotivates me to take good care of my lungs. Sleeping enough makes a 
+              massive difference.</li> 
+              </br>
+              <li><strong>Clear my lungs (ACT)</strong>
+              This can be through proper lung clearing exercises, but I also use devices to
+              help clear my lungs regularly.</li>
+              </br>
+              <li><strong>Exercise regulararly (cardio & weights)</strong>
+              Cardio helps me clear my lungs and move mucus around. Weight training helps 
+              develop the muscles to more effectively clear your lungs and fight infections.</li>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── 04 Causes ──────────────────────────────────── -->
+        <section id="causes" class="content-section" aria-labelledby="h-causes">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">04</span>
+            <h2 id="h-causes" class="content-heading">Causes</h2>
+          </div>
+          <p>
+            Bronchiectasis is not a single disease. It is a structural consequence that
+            can result from a wide range of underlying conditions. Identifying the cause
+            matters: it can affect prognosis, treatment options, and whether family
+            members should be screened.
+          </p>
+          <div class="causes-list">
+            <div class="cause-item">
+              <div>
+                <h3>Post-infectious</h3>
+                <p>The most common cause globally. Repeated or severe respiratory infections (including childhood pneumonia, whooping cough, 
+                tuberculosis, or non-tuberculous mycobacteria (NTM)) can cause enough airway damage to result in permanent dilation.</p>
+              </div>
+            </div>
+            <div class="cause-item">
+              <div>
+                <h3>Idiopathic</h3>
+                <p>In a significant proportion of cases (estimates vary between 26–53%) no underlying cause is found despite thorough 
+                investigation. This is called idiopathic bronchiectasis. It doesn't mean the disease is less real or less treatable.</p>
+              </div>
+            </div>
+            <div class="cause-item">
+              <div>
+                <h3>Primary Ciliary Dyskinesia (PCD)</h3>
+                <p>A genetic condition in which the cilia lining the airways don't function correctly from birth. Without working cilia, 
+                mucus clearance fails, leading to chronic infection and progressive airway damage.</p>
+              </div>
+            </div>
+            <div class="cause-item">
+              <div>
+                <h3>Immune deficiencies</h3>
+                <p>Conditions that reduce the body's ability to fight infection (including CVID and other antibody deficiencies) allow 
+                recurrent lung infections that gradually cause bronchiectatic damage.</p>
+              </div>
+            </div>
+            <div class="cause-item">
+              <div>
+                <h3>Inflammatory &amp; connective tissue disorders</h3>
+                <p>An association exists between bronchiectasis and conditions including Crohn's disease, ulcerative colitis, and 
+                rheumatoid arthritis. The mechanism is not fully understood but may relate to shared inflammatory pathways.</p>
+              </div>
+            </div>
+            <div class="cause-item">
+              <div>
+                <h3>Aspiration</h3>
+                <p>Repeated inhalation of stomach acid or food particles, as can occur with certain swallowing conditions or 
+                significant reflux, can damage airway tissue over time.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── 05 Diagnosis ───────────────────────────────── -->
+        <section id="diagnosis" class="content-section" aria-labelledby="h-diagnosis">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">05</span>
+            <h2 id="h-diagnosis" class="content-heading">Diagnosis</h2>
+          </div>
+          <p>
+            Bronchiectasis is diagnosed by <strong>High Resolution CT scan (HRCT)</strong>
+            of the chest. A plain chest X-ray may show changes but is not sensitive enough
+            for definitive diagnosis. The CT identifies dilated airways, distribution of
+            disease across the lung lobes, and associated structural changes.
+          </p>
+          <p>
+            Diagnosis often follows a frustratingly long journey — a common pattern is
+            years of "recurrent chest infections" before anyone orders the right scan.
+            Average time from first symptoms to diagnosis is frequently reported as
+            several years.
+          </p>
+          <div class="steps-list" role="list" aria-label="Typical diagnostic process">
+            <div class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">1</span>
+              <div>
+                <h3>HRCT chest scan</h3>
+                <p>Confirms presence and distribution of bronchiectasis. The gold standard.</p>
+              </div>
+            </div>
+            <div class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">2</span>
+              <div>
+                <h3>Lung function tests (spirometry)</h3>
+                <p>Measures airflow obstruction and overall lung capacity. Provides a baseline to track over time.</p>
+              </div>
+            </div>
+            <div class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">3</span>
+              <div>
+                <h3>Sputum cultures</h3>
+                <p>Identifies bacteria colonising the airways — critical for guiding antibiotic choices when treatment is needed.</p>
+              </div>
+            </div>
+            <div class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">4</span>
+              <div>
+                <h3>Blood tests &amp; immunology</h3>
+                <p>Screens for immune deficiencies and markers of systemic inflammation.</p>
+              </div>
+            </div>
+            <div class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">5</span>
+              <div>
+                <h3>Investigation for underlying cause</h3>
+                <p>Depending on the clinical picture: sweat test (cystic fibrosis), nasal brushings (PCD), allergy panel (ABPA), and others.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── 06 Treatment ───────────────────────────────── -->
+        <section id="treatment" class="content-section" aria-labelledby="h-treatment">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">06</span>
+            <h2 id="h-treatment" class="content-heading">Treatment</h2>
+          </div>
+          <p>
+            There is no cure for bronchiectasis, but the goals of treatment are clear:
+            reduce exacerbations, slow structural decline, control symptoms, and maintain
+            or improve quality of life. Treatment is highly individual.
+          </p>
+          <div class="treatment-grid">
+            <article class="treatment-card">
+              <h3>Airway clearance therapy (ACT)</h3>
+              <p>The cornerstone of daily management. Techniques include Active Cycle of Breathing (ACBT), oscillating PEP devices (Acapella, Flutter), and postural drainage. Most people with BX do this at least once daily — twice on bad days.</p>
+              <span class="treatment-tag">Daily practice</span>
+            </article>
+            <article class="treatment-card">
+              <h3>Pulmonary rehabilitation</h3>
+              <p>Structured exercise and education programmes shown to improve exercise tolerance, quality of life, and exacerbation recovery. One of the most evidence-supported interventions in chronic lung disease.</p>
+              <span class="treatment-tag">Evidence-strong</span>
+            </article>
+            <article class="treatment-card">
+              <h3>Antibiotics</h3>
+              <p>Used to treat acute exacerbations (typically 14 days) and in some cases as long-term prophylaxis to reduce exacerbation frequency. Choice depends on sputum culture results.</p>
+              <span class="treatment-tag">Reactive &amp; prophylactic</span>
+            </article>
+            <article class="treatment-card">
+              <h3>Inhaled therapies</h3>
+              <p>Bronchodilators (before ACT), hypertonic saline (to thin and mobilise mucus), and occasionally inhaled antibiotics. Not all are appropriate for every patient.</p>
+              <span class="treatment-tag">Inhaled</span>
+            </article>
+            <article class="treatment-card">
+              <h3>Vaccinations</h3>
+              <p>Annual influenza and pneumococcal vaccines significantly reduce the risk of infections that can trigger exacerbations. COVID-19 vaccination is also recommended.</p>
+              <span class="treatment-tag">Prevention</span>
+            </article>
+            <article class="treatment-card">
+              <h3>Surgery (rare)</h3>
+              <p>In cases where disease is localised to one lobe and causing significant problems despite medical management, surgical resection may be considered. Not appropriate for most people with BX.</p>
+              <span class="treatment-tag">Rare cases only</span>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── 07 Exercise & BX ────────────────────────────── -->
+        <section id="exercise" class="content-section" aria-labelledby="h-exercise">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">07</span>
+            <h2 id="h-exercise" class="content-heading">Exercise &amp; BX</h2>
+          </div>
+          <p>
+            This is, in many ways, the core question that BX Ultra exists to answer.
+            The short version: <strong>exercise is not just safe for most people with
+            bronchiectasis — it is one of the most powerful interventions available.</strong>
+          </p>
+          <p>
+            Exercise acts as a form of airway clearance: increased breathing rate and
+            depth helps mobilise mucus. Aerobic training improves cardiovascular efficiency,
+            meaning the lungs have to work less to deliver the same oxygen. Strength
+            training supports respiratory muscle function. And the psychological benefits
+            — reduced anxiety, improved sense of agency over the condition — are
+            independently valuable.
+          </p>
+          <div class="callout callout--highlight">
+            <span class="callout-icon" aria-hidden="true">🏔</span>
+            <div>
+              <strong>The evidence is clear and growing:</strong> physical activity is
+              associated with fewer exacerbations, slower lung function decline, and
+              better quality of life in bronchiectasis. The dose matters — but almost
+              any regular movement is better than none. The Engine Room documents
+              one person's attempt to take this as far as it will go.
+            </div>
+          </div>
+          <p>Practical considerations for training with BX:</p>
+          <ul class="bx-list">
+            <li><strong>Do airway clearance before training</strong> — clearing mucus first means you exercise with cleaner airways and better gas exchange.</li>
+            <li><strong>Monitor sputum changes</strong> — colour, volume, and consistency during and after exercise can signal an oncoming exacerbation before other symptoms appear.</li>
+            <li><strong>Train through stable phases; modify during exacerbations</strong> — complete rest is usually not advised during an exacerbation, but intensity should be reduced significantly.</li>
+            <li><strong>Zone 2 is your friend</strong> — sustained, conversational-pace aerobic work builds the base that makes higher intensities more accessible. Also generally well-tolerated on harder days.</li>
+            <li><strong>Work with your respiratory physiotherapist</strong> — they can advise on ACT techniques that complement your specific training load.</li>
+          </ul>
+        </section>
+
+        <!-- ── 08 Living with BX ───────────────────────────── -->
+        <section id="living-with" class="content-section" aria-labelledby="h-living">
+          <div class="section-label-row">
+            <span class="section-num" aria-hidden="true">08</span>
+            <h2 id="h-living" class="content-heading">Living with BX</h2>
+          </div>
+          <p>
+            A bronchiectasis diagnosis changes daily life — but the range of what that
+            change looks like is enormous. Some people have minimal disruption after
+            establishing a management routine. Others face significant daily burden,
+            frequent hospitalisations, and real limitations. Most people sit somewhere
+            between these poles, and where you sit can shift over time.
+          </p>
+          <ul class="bx-list">
+            <li><strong>Consistent airway clearance, done daily</strong> — even when you feel well. Especially when you feel well. Maintaining a clear airway is much easier than clearing a blocked one.</li>
+            <li><strong>Understanding your own exacerbation pattern</strong> — what triggers them, how they start, how long they last. Pattern recognition is one of the most useful skills to develop.</li>
+            <li><strong>Air quality awareness</strong> — indoor air quality, outdoor pollution on high-intensity training days, and humidity all affect symptoms. The Lifestyle Hub covers this in detail.</li>
+            <li><strong>Sleep</strong> — disrupted by coughing in many people with BX. Positional adjustments and pre-sleep ACT can make a significant difference.</li>
+            <li><strong>A good specialist</strong> — a respiratory physician with bronchiectasis experience, and a respiratory physiotherapist. These two relationships are the most important clinical ones to invest in.</li>
+          </ul>
+          <div class="callout callout--community">
+            <span class="callout-icon" aria-hidden="true">🤝</span>
+            <div>
+              <strong>You're not alone.</strong> Basecamp is the community space on BX Ultra
+              — links to Discord, Strava groups, and spotlights on others living actively
+              with bronchiectasis. <a href="/basecamp" class="inline-link">Come and find your people.</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer" role="note" aria-label="Medical disclaimer">
+          <strong>A note on this content:</strong> Everything on this page is written as
+          an informed layperson's summary, not clinical advice. BX Ultra is not a medical
+          resource and cannot replace the guidance of your respiratory physician or
+          physiotherapist. Always discuss management decisions with your clinical team.
+          For the research behind these summaries, visit
+          <a href="/lab" class="inline-link">The Lab</a>.
+        </div>
+
+      </article>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       GO DEEPER CTA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="go-deeper" aria-labelledby="deeper-heading">
+    <div class="container go-deeper-inner">
+      <div>
+        <p class="section-eyebrow light">Want more?</p>
+        <h2 id="deeper-heading" class="section-title light" style="margin-bottom: 0.5rem;">
+          Go deeper in The Lab
+        </h2>
+        <p class="go-deeper-sub">
+          Clinical studies, research summaries, and expert insight — tagged and
+          filterable. Updated as new evidence emerges.
+        </p>
+      </div>
+      <div class="go-deeper-actions">
+        <a href="/lab"         class="btn btn-primary">Browse The Lab ↗</a>
+        <a href="/engine-room" class="btn btn-ghost">Training logs →</a>
+        <a href="/basecamp"    class="btn btn-ghost">Join the community →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+        <p class="footer-tagline">Breathe. Push. Repeat.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/engine-room">Engine Room</a>
+        <a href="/lab">The Lab</a>
+        <a href="/lifestyle">Lifestyle Hub</a>
+        <a href="/basecamp">Basecamp</a>
+        <a href="/what-is-bx">What is BX?</a>
+        <a href="/about">About</a>
+      </nav>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Discord"   rel="noopener noreferrer">DC</a>
+        <a href="#" aria-label="Strava"    rel="noopener noreferrer">ST</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      © {new Date().getFullYear()} BX Ultra · Built by The Airway Adventurer
+    </p>
+  </footer>
+
+</Layout>
+
+<!-- ════════════════════════════════════════════════════════════
+     STYLES
+════════════════════════════════════════════════════════════ -->
+<style>
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--forest);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+  }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: 0.03em; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-menu a { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream80); text-decoration: none; transition: color 0.15s; }
+  .nav-menu a:hover { color: var(--cream); }
+  .nav-pill { background: var(--orange); color: var(--cream) !important; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .nav-pill--active { background: var(--cream) !important; color: var(--forest) !important; }
+  .nav-toggle { display: none; flex-direction: column; justify-content: space-between; width: 22px; height: 16px; background: none; border: none; cursor: pointer; padding: 0; }
+  .nav-toggle span { display: block; height: 2px; background: var(--cream); border-radius: 1px; }
+
+  /* ── SHARED ──────────────────────────────────────────────── */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+
+  .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+  .section-eyebrow.light { color: rgba(230,92,0,0.9); }
+
+  .section-title { font-family: var(--font-display); font-size: clamp(32px, 4vw, 44px); font-weight: 900; text-transform: uppercase; line-height: 0.95; color: var(--forest); margin-bottom: 2rem; }
+  .section-title.light { color: var(--cream); }
+
+  .btn { display: inline-block; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 11px 22px; border-radius: var(--radius-sm); transition: opacity 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--orange); color: var(--cream); border: none; }
+  .btn-ghost   { background: transparent; color: var(--cream80); border: 1.5px solid rgba(249,248,246,0.3); }
+  .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.6); }
+
+  .inline-link { color: var(--orange); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: opacity 0.15s; }
+  .inline-link:hover { opacity: 0.75; }
+
+  /* ── PAGE HERO ───────────────────────────────────────────── */
+  .page-hero { background: var(--forest); padding: 4.5rem 0 0; }
+  .page-hero .container { padding-bottom: 2.5rem; }
+  .page-eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .page-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(48px, 7vw, 72px); line-height: 0.93; text-transform: uppercase; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-headline em { font-style: normal; color: var(--orange); }
+  .page-sub { font-size: 16px; line-height: 1.65; color: var(--cream80); max-width: 520px; margin-bottom: 2rem; }
+
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--cream80); background: var(--cream10); border: 1px solid var(--cream15); padding: 5px 12px; border-radius: 20px; transition: background 0.15s, color 0.15s; }
+  .chip:hover { background: var(--cream15); color: var(--cream); }
+
+  .hero-rule { display: flex; align-items: center; padding: 0 2rem; }
+  .rule-line  { flex: 1; height: 3px; background: var(--orange); }
+  .rule-dot   { width: 10px; height: 10px; border-radius: 50%; background: var(--cream); border: 2px solid var(--orange); flex-shrink: 0; }
+
+  /* ── KEY FACTS STRIP ─────────────────────────────────────── */
+  .facts-strip { background: #f0eeeb; border-bottom: 1px solid var(--forest15); padding: 1.75rem 0; }
+  .facts-grid  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .fact-item   { text-align: center; }
+  .fact-value  { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 4px; }
+  .fact-label  { font-size: 12px; color: var(--forest60); line-height: 1.4; }
+
+  /* ── CONTENT LAYOUT ──────────────────────────────────────── */
+  .content-wrapper { background: var(--cream); padding: 4rem 0 5rem; }
+  .content-grid    { display: grid; grid-template-columns: 200px 1fr; gap: 4rem; align-items: start; }
+
+  /* ── TOC SIDEBAR ─────────────────────────────────────────── */
+  .toc-sidebar { position: sticky; top: 76px; }
+  .toc-heading { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .toc-list    { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .toc-link    { display: block; font-size: 13px; font-weight: 500; color: var(--forest60); text-decoration: none; padding: 5px 8px; border-left: 2px solid transparent; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; transition: color 0.15s, border-color 0.15s, background 0.15s; line-height: 1.3; }
+  .toc-link:hover  { color: var(--forest); border-color: var(--orange); background: rgba(230,92,0,0.06); }
+  .toc-link.active { color: var(--forest); border-color: var(--orange); font-weight: 600; background: rgba(230,92,0,0.06); }
+  .toc-divider { height: 1px; background: var(--forest15); margin: 1.25rem 0; }
+  .toc-lab-link { display: block; font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--orange); text-decoration: none; line-height: 1.5; transition: opacity 0.15s; }
+  .toc-lab-link:hover { opacity: 0.75; }
+  .toc-lab-icon { font-size: 16px; display: block; margin-bottom: 4px; }
+
+  /* ── ARTICLE BODY ────────────────────────────────────────── */
+  .article-body { max-width: 680px; }
+
+  .content-section { padding-top: 3rem; border-top: 1px solid var(--forest15); }
+  .content-section:first-child { border-top: none; padding-top: 0; }
+
+  .section-label-row { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+  .section-num { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--orange); flex-shrink: 0; }
+  .content-heading { font-family: var(--font-display); font-size: clamp(22px, 3vw, 28px); font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1; }
+
+  .article-body p        { font-size: 16px; line-height: 1.78; color: var(--forest); margin-bottom: 1.1rem; }
+  .article-body strong   { font-weight: 600; }
+  .article-body em       { font-style: italic; color: var(--forest60); }
+
+  /* Callouts */
+  .callout            { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem 1.25rem; border-radius: var(--radius-md); margin: 1.75rem 0; font-size: 15px; line-height: 1.65; }
+  .callout--info      { background: #EAF3DE; border-left: 3px solid var(--forest); }
+  .callout--personal  { background: #FFF5EE; border-left: 3px solid var(--orange); }
+  .callout--highlight { background: #FFF5EE; border-left: 3px solid var(--orange); }
+  .callout--community { background: #EAF3DE; border-left: 3px solid var(--forest); }
+  .callout-icon   { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .callout div    { flex: 1; }
+  .callout strong { font-weight: 600; display: block; margin-bottom: 0.25rem; }
+  .callout em     { font-style: italic; opacity: 0.75; }
+
+  /* Symptom grid */
+  .symptom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .symptom-card { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.1rem 1.25rem; }
+  .symptom-card--primary { border-color: var(--orange); background: #FFF8F4; }
+  .symptom-icon   { font-size: 22px; display: block; margin-bottom: 0.5rem; }
+  .symptom-card h3 { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.5rem; }
+  .symptom-card p  { font-size: 14px; line-height: 1.6; color: var(--forest60); margin: 0; }
+
+  /* Causes list */
+  .causes-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0; }
+  .cause-item  { display: flex; gap: 1rem; align-items: flex-start; }
+  .cause-dot   { width: 10px; height: 10px; border-radius: 50%; background: var(--forest15); border: 2px solid var(--forest60); flex-shrink: 0; margin-top: 6px; }
+  .cause-dot--common { background: var(--orange); border-color: var(--orange); }
+  .cause-item h3 { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.4rem; }
+  .cause-item p  { font-size: 15px; line-height: 1.5; color: var(--forest60); margin: 0; }
+
+  /* Diagnosis steps */
+  .steps-list  { display: flex; flex-direction: column; margin: 1.5rem 0; }
+  .step-item   { display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.1rem 0; border-bottom: 1px solid var(--forest15); }
+  .step-item:last-child { border-bottom: none; }
+  .step-num    { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--orange); opacity: 0.5; line-height: 1; flex-shrink: 0; min-width: 28px; }
+  .step-item h3 { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.3rem; }
+  .step-item p  { font-size: 14px; line-height: 1.6; color: var(--forest60); margin: 0; }
+
+  /* Treatment grid */
+  .treatment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .treatment-card { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; position: relative; overflow: hidden; }
+  .treatment-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--forest15); }
+  .treatment-card h3 { font-family: var(--font-display); font-size: 15px; font-weight: 900; text-transform: uppercase; color: var(--forest); }
+  .treatment-card p  { font-size: 13.5px; line-height: 1.6; color: var(--forest60); flex: 1; margin: 0; }
+  .treatment-tag     { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); align-self: flex-start; }
+
+  /* Airway diagram */
+  .diagram           { margin: 2rem 0; }
+  .diagram-panels    { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .diagram-panel     { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+  .airway-svg        { width: 250px; height: 130px; }
+  .diagram-label     { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .diagram-label--green  { color: var(--forest); }
+  .diagram-label--orange { color: var(--orange); }
+  .diagram-caption       { font-size: 12px; color: var(--forest60); text-align: center; max-width: 250px; line-height: 1.4; }
+  .diagram-figcaption    { font-size: 11px; color: var(--forest60); margin-top: 0.75rem; font-style: italic; }
+
+  /* BX list */
+  .bx-list    { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 1.25rem 0; }
+  .bx-list li { font-size: 15px; line-height: 1.65; color: var(--forest); padding-left: 1.4rem; position: relative; }
+  .bx-list li::before { content: '→'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+  .bx-list strong { font-weight: 600; }
+
+  /* Disclaimer */
+  .disclaimer { background: #f0eeeb; border-radius: var(--radius-md); padding: 1.1rem 1.25rem; font-size: 13.5px; line-height: 1.65; color: var(--forest60); margin-top: 3.5rem; border: 1px solid var(--forest15); }
+  .disclaimer strong { color: var(--forest); }
+
+  /* ── GO DEEPER ───────────────────────────────────────────── */
+  .go-deeper       { background: var(--forest); padding: 4rem 0; }
+  .go-deeper-inner { display: flex; flex-wrap: wrap; gap: 2.5rem; align-items: center; justify-content: space-between; }
+  .go-deeper-sub   { font-size: 15px; line-height: 1.6; color: var(--cream80); max-width: 400px; margin-top: 0.5rem; }
+  .go-deeper-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { background: var(--forest); border-top: 3px solid var(--orange); padding: 2.5rem 2rem 1.5rem; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 1; min-width: 140px; }
+  .footer-brand .logo { font-size: 20px; display: inline-block; margin-bottom: 6px; }
+  .footer-tagline { font-size: 12px; color: var(--cream50); letter-spacing: 0.04em; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex: 2; }
+  .footer-nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cream50); text-decoration: none; transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--cream); }
+  .footer-nav a[href="/what-is-bx"] { color: var(--cream); }
+  .footer-social { display: flex; gap: 10px; align-items: center; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cream15); border-radius: 50%; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--cream50); text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+  .footer-social a:hover { color: var(--cream); border-color: var(--cream50); }
+  .footer-legal { font-size: 12px; color: rgba(249,248,246,0.3); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--cream10); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .nav-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--forest); flex-direction: column; align-items: flex-start; gap: 0; padding: 0.5rem 0 1rem; border-top: 1px solid var(--cream15); }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 0.75rem 2rem; font-size: 14px; }
+    .nav-pill, .nav-pill--active { border-radius: 0 !important; background: transparent !important; color: var(--orange) !important; }
+
+    .facts-grid     { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    .content-grid   { grid-template-columns: 1fr; gap: 0; }
+    .toc-sidebar    { display: none; }
+    .symptom-grid   { grid-template-columns: 1fr; }
+    .treatment-grid { grid-template-columns: 1fr; }
+    .go-deeper-inner { flex-direction: column; gap: 1.5rem; }
+    .footer-inner   { flex-direction: column; gap: 1.5rem; }
+  }
+</style>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS — mobile nav + TOC active link highlighting
+════════════════════════════════════════════════════════════ -->
+<script>
+  // Mobile nav
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+  const menu   = document.querySelector('.nav-menu')   as HTMLElement;
+  toggle?.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // TOC active section via IntersectionObserver
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+  const sections = document.querySelectorAll<HTMLElement>('.content-section');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          document.querySelector<HTMLAnchorElement>(
+            `.toc-link[href="#${entry.target.id}"]`
+          )?.classList.add('active');
+        }
+      });
+    },
+    { rootMargin: '-15% 0px -75% 0px' }
+  );
+  sections.forEach(s => observer.observe(s));
+</script>
