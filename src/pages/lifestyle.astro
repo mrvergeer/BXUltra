@@ -1,0 +1,838 @@
+---
+// src/pages/lifestyle.astro
+// BX Ultra — The Lifestyle Hub
+// Structure: Nav → Hero → Quick Wins → Six pillar sections → Daily rhythm → CTA → Footer
+//
+// HOW TO MAINTAIN THIS PAGE:
+//   - Each pillar section has a `tips` array — add, edit, or remove tips freely
+//   - The `quickWins` array drives the top strip — keep it to 5–7 punchy actions
+//   - `airFactors` drives the air quality cards
+//   - Add personal notes inside the <PersonalNote> placeholders in each section
+//
+import Layout from '../layouts/Layout.astro';
+
+// ── QUICK WINS — immediately actionable, shown at top ────────────────────────
+const quickWins = [
+  { icon: "💨", action: "Do ACT before your morning coffee", why: "Clears overnight mucus accumulation before anything else stresses your airways." },
+  { icon: "💧", action: "Drink 500ml of water on waking", why: "Hydration thins mucus and makes morning clearance significantly easier." },
+  { icon: "🪟", action: "Open a window for 10 minutes", why: "Indoor air is often more polluted than outdoor. Fresh air exchange matters daily." },
+  { icon: "🌡️", action: "Check today's air quality index", why: "On high pollution or high pollen days, adjust outdoor training intensity accordingly." },
+  { icon: "😴", action: "Elevate your head 10–15cm tonight", why: "Reduces overnight mucus pooling and can meaningfully reduce morning cough load." },
+];
+
+// ── NUTRITION TIPS ────────────────────────────────────────────────────────────
+const nutritionTips = [
+  {
+    title:   "Anti-inflammatory diet as a foundation",
+    body:    "Chronic inflammation drives BX progression. An omega-3 rich diet — oily fish, walnuts, flaxseed — alongside plenty of colourful vegetables, provides the building blocks for a less reactive inflammatory environment. This isn't a cure, but it's a meaningful modifier.",
+    tag:     "Foundation",
+  },
+  {
+    title:   "Protein for respiratory muscle maintenance",
+    body:    "Breathing is muscular work. The diaphragm and intercostal muscles need adequate protein to maintain function — especially under training load. Aim for 1.6–2g per kg of bodyweight if you're training seriously. Spreading intake across meals improves absorption.",
+    tag:     "Performance",
+  },
+  {
+    title:   "Avoid heavy meals before training",
+    body:    "A full stomach pushes up against the diaphragm and reduces lung volume. Leave 2–3 hours between a full meal and high-intensity training. A small carbohydrate snack 60–90 minutes prior is fine.",
+    tag:     "Training",
+  },
+  {
+    title:   "Vitamin D — worth checking",
+    body:    "Vitamin D deficiency is common and is associated with increased respiratory infection susceptibility. Many people with BX, especially in Northern Europe, are deficient. Ask your GP to test levels and supplement if indicated.",
+    tag:     "Supplementation",
+  },
+  {
+    title:   "Limit alcohol and processed food during exacerbations",
+    body:    "Both increase systemic inflammation and can impair immune response. During an exacerbation, treat nutrition as part of your recovery protocol — not an afterthought.",
+    tag:     "Exacerbation",
+  },
+];
+
+// ── HYDRATION TIPS ────────────────────────────────────────────────────────────
+const hydrationTips = [
+  {
+    title:   "Hydration is your cheapest airway clearance tool",
+    body:    "Mucus viscosity drops significantly with adequate hydration. Well-hydrated mucus is easier to mobilise with ACT, easier to cough up, and less hospitable to bacterial colonisation. Before reaching for a nebuliser, make sure you're drinking enough.",
+    tag:     "Foundation",
+  },
+  {
+    title:   "Target: 2–2.5 litres per day minimum",
+    body:    "More if you're training hard, in a warm environment, or in an exacerbation. Sputum colour and volume are useful hydration feedback — thick, darker sputum is often a sign of dehydration before it's a sign of infection.",
+    tag:     "Target",
+  },
+  {
+    title:   "Caffeine: not the enemy, but context matters",
+    body:    "Moderate coffee and tea intake is fine and won't cause meaningful dehydration in habitual consumers. However, heavy caffeine intake can increase mucus viscosity and disrupt sleep, both relevant for BX. Aim to match each caffeinated drink with an equivalent volume of water.",
+    tag:     "Nuance",
+  },
+  {
+    title:   "Hypertonic saline as an adjunct",
+    body:    "Inhaled hypertonic saline (3% or 7%) works by drawing water into the airway surface liquid, hydrating mucus from the inside. It's the pharmaceutical version of what good systemic hydration supports naturally. Discuss with your respiratory team if you're not already using it.",
+    tag:     "Clinical",
+  },
+];
+
+// ── AIR QUALITY FACTORS ───────────────────────────────────────────────────────
+const airFactors = [
+  { icon: "🏭", label: "Outdoor pollution (PM2.5)", impact: "High", action: "Check AQI daily. Move intense training indoors on red/very unhealthy days." },
+  { icon: "🌿", label: "Pollen", impact: "Medium–High", action: "Track pollen calendar. Many BX patients have co-existing airway sensitivity." },
+  { icon: "🏠", label: "Indoor mould & damp", impact: "High", action: "Mould spores are a significant trigger. Fix any damp, use dehumidifier if needed." },
+  { icon: "🧹", label: "Cleaning products", impact: "Medium", action: "Bleach, spray cleaners, and aerosols can trigger bronchospasm. Use unscented, non-aerosol alternatives." },
+  { icon: "🌡️", label: "Cold, dry air", impact: "Medium", action: "Cold air triggers airway narrowing. Warm up properly; consider a buff/scarf over mouth in winter training." },
+  { icon: "💨", label: "Indoor ventilation", impact: "High", action: "Air exchange matters more than most people realise. Open windows daily, especially in morning." },
+];
+
+// ── SLEEP TIPS ────────────────────────────────────────────────────────────────
+const sleepTips = [
+  {
+    title:   "Elevate your head",
+    body:    "A 10–15cm elevation (via a wedge pillow or adjustable bed head) reduces overnight mucus pooling in the lower airways. Many people with BX report significantly reduced morning cough load from this single change.",
+    tag:     "Immediate win",
+  },
+  {
+    title:   "ACT before bed",
+    body:    "A short airway clearance session 30–60 minutes before sleep reduces the mucus load your airways are managing overnight. Not a full session, 10–15 minutes of ACBT or PEP is sufficient. Avoid vigorous clearance immediately before sleep as it can be stimulating.",
+    tag:     "Routine",
+  },
+  {
+    title:   "Manage nocturnal cough",
+    body:    "If nocturnal cough is frequent, it's worth discussing with your respiratory team, causes include reflux, postnasal drip, and inadequate daily clearance. Each has a different solution. Don't accept poor sleep as inevitable with BX.",
+    tag:     "Problem-solve",
+  },
+  {
+    title:   "Sleep and exacerbation risk",
+    body:    "Sleep deprivation impairs immune function and increases susceptibility to respiratory infection. Prioritising sleep during high-training-load periods is not optional, it's part of the protocol.",
+    tag:     "Performance",
+  },
+  {
+    title:   "Track sleep quality, not just duration",
+    body:    "8 hours of frequently interrupted sleep is not the same as 7 hours of consolidated sleep. If you're tracking training, track sleep quality too. Resting heart rate and HRV (via a wearable) are useful proxies.",
+    tag:     "Tracking",
+  },
+];
+
+// ── DAILY ROUTINE FRAMEWORK ───────────────────────────────────────────────────
+const routineBlocks = [
+  {
+    time:  "Morning",
+    icon:  "🌅",
+    steps: [
+      "Drink 500ml water immediately on waking",
+      "Airway clearance (ACT) — 15–20 min before or after light food",
+      "Check air quality index for training decisions",
+      "Inhaled medications if prescribed (typically post-ACT)",
+      "Breakfast with protein and anti-inflammatory focus",
+    ],
+  },
+  {
+    time:  "Pre-training",
+    icon:  "🏃",
+    steps: [
+      "ACT if not done in morning (at least 30 min before hard effort)",
+      "Bronchodilator if prescribed — 15–20 min before",
+      "Hydration check: pale yellow urine = adequate",
+      "Note baseline: energy, sputum colour/volume, breathing ease",
+      "Warm-up longer than you think you need (10–15 min minimum)",
+    ],
+  },
+  {
+    time:  "Post-training",
+    icon:  "♻️",
+    steps: [
+      "Note sputum changes — colour, volume, effort to clear",
+      "Rehydrate: 500–750ml in first 30 min post-session",
+      "Protein intake within 45 min (recovery and respiratory muscle)",
+      "Note any unusual breathlessness or chest tightness",
+      "Log the session — this data becomes your personalised playbook",
+    ],
+  },
+  {
+    time:  "Evening",
+    icon:  "🌙",
+    steps: [
+      "Second ACT session if training load was high or sputum increased",
+      "Evening meal: lighter, earlier if possible (reduces reflux risk)",
+      "Device-free wind-down: screens impair sleep onset and quality",
+      "Pre-sleep ACT (short: 10–15 min) if nocturnal cough is an issue",
+      "Elevate head of bed; aim for 7–9 hours",
+    ],
+  },
+];
+
+// ── BREATHWORK TECHNIQUES ────────────────────────────────────────────────────
+const breathworkItems = [
+  {
+    name:    "Active Cycle of Breathing Technique (ACBT)",
+    type:    "Core ACT",
+    body:    "The foundation of most BX airway clearance. Three phases: breathing control (relaxed diaphragmatic breathing), thoracic expansion exercises (deep breaths with holds), and forced expiration technique (huffing). Typically 4–6 cycles per session.",
+    learn:   "Ask your respiratory physio to assess your technique in person — small adjustments make a large difference.",
+  },
+  {
+    name:    "Oscillating PEP devices (Acapella, Flutter)",
+    type:    "Device-assisted",
+    body:    "Devices that create oscillating positive expiratory pressure, loosening mucus from airway walls while you breathe out against resistance. Many people find these more effective than ACBT alone, especially for lower lobe disease.",
+    learn:   "Prescription and technique guidance from your physio. Not all devices suit all patients.",
+  },
+  {
+    name:    "Autogenic Drainage (AD)",
+    type:    "Advanced ACT",
+    body:    "A self-drainage technique using controlled breathing at different lung volumes to move mucus from peripheral to central airways without coughing. Has a steeper learning curve but excellent evidence. Often preferred for people who need hands-free clearance.",
+    learn:   "Takes several sessions with a physio to learn correctly. Worth the investment.",
+  },
+  {
+    name:    "Pursed-lip breathing",
+    type:    "Symptom management",
+    body:    "Breathing in through the nose, out slowly through pursed lips. Slows breathing rate, reduces dynamic airway collapse, and can reduce breathlessness during activity. A useful tool mid-exercise or during breathless episodes.",
+    learn:   "Can be self-taught; practice when calm before using during exertion.",
+  },
+  {
+    name:    "Diaphragmatic breathing",
+    type:    "Foundation",
+    body:    "Conscious use of the diaphragm rather than accessory muscles to drive breathing. Reduces the energy cost of breathing, supports ACT effectiveness, and forms the base of most breathing rehabilitation programmes.",
+    learn:   "Practice supine initially — one hand on chest, one on abdomen. The abdomen should rise, not the chest.",
+  },
+];
+---
+
+<Layout
+  title="Lifestyle Hub"
+  description="BX Ultra's Lifestyle Hub — practical guidance on nutrition, hydration, air quality, sleep, daily routines, and breathwork for people with bronchiectasis who want to live and train well."
+>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main">
+      <a href="/engine-room">Engine Room</a>
+      <a href="/lab">The Lab</a>
+      <a href="/lifestyle" class="nav-active">Lifestyle Hub</a>
+      <a href="/basecamp">Basecamp</a>
+      <a href="/what-is-bx" class="nav-pill">What is BX?</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="page-hero" aria-labelledby="lifestyle-heading">
+    <div class="container">
+      <p class="page-eyebrow">Daily action · Management · Energy</p>
+      <h1 id="lifestyle-heading" class="page-headline">Lifestyle <em>Hub</em></h1>
+      <p class="page-sub">
+        The space between diagnosis and performance is mostly lived in the details
+        of daily life. What you eat, how you hydrate, the air you breathe, how you
+        sleep, and how you clear your airways — these are the levers that make
+        everything else possible.
+      </p>
+
+      <!-- Section jump chips -->
+      <nav class="hero-chips" aria-label="Jump to section">
+        <a href="#quick-wins"  class="chip">⚡ Quick Wins</a>
+        <a href="#nutrition"   class="chip">🥗 Nutrition</a>
+        <a href="#hydration"   class="chip">💧 Hydration</a>
+        <a href="#air-quality" class="chip">🌬️ Air Quality</a>
+        <a href="#sleep"       class="chip">😴 Sleep</a>
+        <a href="#routine"     class="chip">📅 Daily Routine</a>
+        <a href="#breathwork"  class="chip">💨 Breathwork</a>
+      </nav>
+    </div>
+    <div class="hero-rule" aria-hidden="true">
+      <span class="rule-line"></span>
+      <span class="rule-dot"></span>
+      <span class="rule-line"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       QUICK WINS STRIP
+  ══════════════════════════════════════════════════════════ -->
+  <section id="quick-wins" class="quick-wins-section" aria-labelledby="qw-heading">
+    <div class="container">
+      <div class="qw-header">
+        <div>
+          <p class="section-eyebrow">Do these today</p>
+          <h2 id="qw-heading" class="section-title" style="margin-bottom:0">⚡ Quick Wins</h2>
+        </div>
+        <p class="qw-subhead">
+          Five things with meaningful impact that cost nothing and take under 10 minutes each.
+        </p>
+      </div>
+      <ol class="qw-list" role="list">
+        {quickWins.map((w, i) => (
+          <li class="qw-item">
+            <span class="qw-num" aria-hidden="true">{String(i + 1).padStart(2,'0')}</span>
+            <div class="qw-content">
+              <span class="qw-icon" aria-hidden="true">{w.icon}</span>
+              <div>
+                <strong class="qw-action">{w.action}</strong>
+                <p class="qw-why">{w.why}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NUTRITION
+  ══════════════════════════════════════════════════════════ -->
+  <section id="nutrition" class="pillar-section pillar-section--light" aria-labelledby="nutrition-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">🥗</div>
+        <div>
+          <p class="section-eyebrow">Pillar 01</p>
+          <h2 id="nutrition-heading" class="section-title" style="margin-bottom:0.5rem">Nutrition</h2>
+          <p class="pillar-lead">
+            Food doesn't cure bronchiectasis. But chronic inflammation is the engine
+            of disease progression — and diet is one of the few levers you can pull
+            daily. Anti-inflammatory eating isn't a trend here; it's a management tool.
+          </p>
+        </div>
+      </div>
+
+      <div class="tips-grid">
+        {nutritionTips.map(tip => (
+          <article class="tip-card">
+            <span class="tip-tag">{tip.tag}</span>
+            <h3 class="tip-title">{tip.title}</h3>
+            <p class="tip-body">{tip.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="personal-note" role="note">
+        <span class="pn-label" aria-hidden="true">📝 Personal note</span>
+        <p>
+          <em>
+            I have found that what I eat makes a massive difference. The days when I eat unhealthy,
+            generally my lungs are struggling much more. I also find that certain types of food / drink
+            exacerbate the creation of mucus. In particular, milk is one that has an impact. Another thing
+            I pay attention to is not to eat too late. Anytime I eat after 8pm, the effects are noticable. 
+            This is likely related to heartburn as well, but for impacts mucus accumualtion. 
+          </em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HYDRATION
+  ══════════════════════════════════════════════════════════ -->
+  <section id="hydration" class="pillar-section pillar-section--dark" aria-labelledby="hydration-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">💧</div>
+        <div>
+          <p class="section-eyebrow light">Pillar 02</p>
+          <h2 id="hydration-heading" class="section-title light" style="margin-bottom:0.5rem">Hydration</h2>
+          <p class="pillar-lead light">
+            Hydration is arguably the most underrated airway management tool available
+            to people with BX. It is free, immediate in effect, and consistently overlooked.
+            Mucus viscosity is directly affected by systemic fluid status.
+          </p>
+        </div>
+      </div>
+
+      <div class="tips-grid">
+        {hydrationTips.map(tip => (
+          <article class="tip-card tip-card--dark">
+            <span class="tip-tag tip-tag--dark">{tip.tag}</span>
+            <h3 class="tip-title tip-title--dark">{tip.title}</h3>
+            <p class="tip-body tip-body--dark">{tip.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <!-- Visual hydration scale -->
+      <div class="hydration-scale" aria-label="Urine colour hydration guide">
+        <p class="scale-label">Urine colour guide — a simple daily check:</p>
+        <div class="scale-bar">
+          <div class="scale-seg" style="background:#fdf6d3;" aria-label="Pale yellow: well hydrated">
+            <span>Pale yellow</span><strong>✓ Well hydrated</strong>
+          </div>
+          <div class="scale-seg" style="background:#f5e080;" aria-label="Yellow: acceptable">
+            <span>Yellow</span><strong>Drink more</strong>
+          </div>
+          <div class="scale-seg" style="background:#d4a017;" aria-label="Dark yellow: dehydrated">
+            <span>Dark yellow</span><strong>Dehydrated</strong>
+          </div>
+          <div class="scale-seg" style="background:#8B6914; color:#fff;" aria-label="Amber: significantly dehydrated">
+            <span>Amber</span><strong>Act now</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="personal-note personal-note--dark" role="note">
+        <span class="pn-label" aria-hidden="true">📝 Personal note</span>
+        <p>
+          <em>
+            I have found that proper hydration is a big challenge to me that should take higher priority. I often find that
+            I am not hydrating enough, but struggle to be consistent. Knowing that this can make a massive difference though 
+            should be a real driver. Also, I for sure take too much coffee, another area that needs focus and more management. 
+          </em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       AIR QUALITY
+  ══════════════════════════════════════════════════════════ -->
+  <section id="air-quality" class="pillar-section pillar-section--light" aria-labelledby="air-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">🌬️</div>
+        <div>
+          <p class="section-eyebrow">Pillar 03</p>
+          <h2 id="air-heading" class="section-title" style="margin-bottom:0.5rem">Air Quality</h2>
+          <p class="pillar-lead">
+            Your airways are in direct contact with the air around you — more so than
+            most people because you're breathing harder and more often as an athlete.
+            What's in that air matters significantly, and the good news is that most
+            of the highest-impact factors are controllable.
+          </p>
+        </div>
+      </div>
+
+      <div class="air-grid">
+        {airFactors.map(f => (
+          <div class="air-card">
+            <div class="air-card-top">
+              <span class="air-icon" aria-hidden="true">{f.icon}</span>
+              <span class={`impact-badge impact-${f.impact.toLowerCase().split('–')[0].trim().replace(' ','')}`}>
+                {f.impact} impact
+              </span>
+            </div>
+            <h3 class="air-label">{f.label}</h3>
+            <p class="air-action">{f.action}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- AQI resource callout -->
+      <div class="callout callout--info">
+        <span class="callout-icon" aria-hidden="true">🔗</span>
+        <div>
+          <strong>Daily habit: check your AQI each morning.</strong>
+          In the Netherlands, use <a href="https://www.luchtmeetnet.nl" target="_blank" rel="noopener noreferrer" class="inline-link">luchtmeetnet.nl</a> for real-time air quality data.
+          Internationally, <a href="https://www.iqair.com" target="_blank" rel="noopener noreferrer" class="inline-link">IQAir.com</a> covers most cities.
+          On orange/red days, move intense outdoor training inside.
+        </div>
+      </div>
+
+      <div class="personal-note" role="note">
+        <span class="pn-label" aria-hidden="true">📝 Personal note</span>
+        <p>
+          <em>
+            For a long time, I have not considered Air Quality as something to control. That being said,
+            there are a number of things you can influence. Being aware of this and understanding if differences
+            in air quality impact your comfort and/or exacerbations is important to monitor over time. 
+          </em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SLEEP
+  ══════════════════════════════════════════════════════════ -->
+  <section id="sleep" class="pillar-section pillar-section--warm" aria-labelledby="sleep-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">😴</div>
+        <div>
+          <p class="section-eyebrow">Pillar 04</p>
+          <h2 id="sleep-heading" class="section-title" style="margin-bottom:0.5rem">Sleep</h2>
+          <p class="pillar-lead">
+            Sleep is where your body repairs, consolidates training adaptations, and
+            mounts immune responses. Disrupted sleep (which many people with BX
+            experience due to nocturnal cough) undermines all of it. Treating sleep
+            as a performance variable, not a luxury, changes outcomes.
+          </p>
+        </div>
+      </div>
+
+      <div class="tips-grid">
+        {sleepTips.map(tip => (
+          <article class="tip-card tip-card--warm">
+            <span class="tip-tag tip-tag--warm">{tip.tag}</span>
+            <h3 class="tip-title">{tip.title}</h3>
+            <p class="tip-body">{tip.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="personal-note personal-note--warm" role="note">
+        <span class="pn-label" aria-hidden="true">📝 Personal note</span>
+        <p>
+          <em>
+            For me, sleep is one of the key influences in managing my BX. As soon as I sleep less than 7 hours, I can feel 
+            the impact immediatly. This pretty much always leads to more coughing, more mucus, and a harder time to clear mucus. 
+            Getting closer to 8 hours of uninterupted sleep makes things even better. I struggle to get the proper amount of sleep
+            but am very aware that this is one of the major factors in managing my BX. 
+          </em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       DAILY ROUTINE
+  ══════════════════════════════════════════════════════════ -->
+  <section id="routine" class="pillar-section pillar-section--dark" aria-labelledby="routine-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">📅</div>
+        <div>
+          <p class="section-eyebrow light">Pillar 05</p>
+          <h2 id="routine-heading" class="section-title light" style="margin-bottom:0.5rem">Daily Routine</h2>
+          <p class="pillar-lead light">
+            BX management isn't a collection of isolated actions, it's a rhythm.
+            The same interventions work far better when they're consistent and sequenced
+            correctly. This is the framework I've built around training. Adapt it to
+            your own schedule; the principles are what matter.
+          </p>
+        </div>
+      </div>
+
+      <div class="routine-grid">
+        {routineBlocks.map(block => (
+          <div class="routine-block">
+            <div class="routine-block-header">
+              <span class="routine-icon" aria-hidden="true">{block.icon}</span>
+              <h3 class="routine-time">{block.time}</h3>
+            </div>
+            <ol class="routine-steps" role="list">
+              {block.steps.map((step, i) => (
+                <li class="routine-step">
+                  <span class="step-dot" aria-hidden="true"></span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+
+      <div class="callout callout--cream">
+        <span class="callout-icon" aria-hidden="true">📊</span>
+        <div>
+          <strong>Track your routine in the Engine Room.</strong>
+          The daily log is where this routine becomes data — and data, over time,
+          becomes your personal playbook for managing BX around training.
+          <a href="/engine-room" class="inline-link-light">Go to the Engine Room →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       BREATHWORK & ACT
+  ══════════════════════════════════════════════════════════ -->
+  <section id="breathwork" class="pillar-section pillar-section--light" aria-labelledby="breathwork-heading">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-icon-wrap" aria-hidden="true">💨</div>
+        <div>
+          <p class="section-eyebrow">Pillar 06</p>
+          <h2 id="breathwork-heading" class="section-title" style="margin-bottom:0.5rem">Breathwork &amp; ACT</h2>
+          <p class="pillar-lead">
+            Airway clearance therapy is the single most important daily intervention
+            for most people with bronchiectasis. The techniques below range from the
+            foundational to the advanced. Every person with BX should have at least
+            one technique assessed and taught by a respiratory physiotherapist.
+          </p>
+        </div>
+      </div>
+
+      <div class="breathwork-list">
+        {breathworkItems.map(item => (
+          <article class="bw-card">
+            <div class="bw-card-header">
+              <div>
+                <span class="bw-type">{item.type}</span>
+                <h3 class="bw-name">{item.name}</h3>
+              </div>
+            </div>
+            <p class="bw-body">{item.body}</p>
+            <div class="bw-learn">
+              <span class="bw-learn-icon" aria-hidden="true">💡</span>
+              <p>{item.learn}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon" aria-hidden="true">⚗</span>
+        <div>
+          <strong>Evidence base:</strong> for the research behind ACT techniques,
+          including the Cochrane review on airway clearance in bronchiectasis,
+          visit <a href="/lab" class="inline-link">The Lab</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CTA — Engine Room
+  ══════════════════════════════════════════════════════════ -->
+  <section class="cta-section" aria-label="Next steps">
+    <div class="container cta-inner">
+      <div>
+        <p class="section-eyebrow light">Put it into practice</p>
+        <h2 class="section-title light" style="margin-bottom:0.5rem">Track it in the Engine Room</h2>
+        <p class="cta-sub">
+          The Lifestyle Hub gives you the framework. The Engine Room is where
+          you apply it, log it, and turn it into personal data over time.
+        </p>
+      </div>
+      <div class="cta-buttons">
+        <a href="/engine-room" class="btn btn-primary">Engine Room ↗</a>
+        <a href="/lab"         class="btn btn-ghost">Research in The Lab →</a>
+        <a href="/basecamp"    class="btn btn-ghost">Community →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+        <p class="footer-tagline">Breathe. Push. Repeat.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/engine-room">Engine Room</a>
+        <a href="/lab">The Lab</a>
+        <a href="/lifestyle">Lifestyle Hub</a>
+        <a href="/basecamp">Basecamp</a>
+        <a href="/what-is-bx">What is BX?</a>
+        <a href="/about">About</a>
+      </nav>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Discord"   rel="noopener noreferrer">DC</a>
+        <a href="#" aria-label="Strava"    rel="noopener noreferrer">ST</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      © {new Date().getFullYear()} BX Ultra · Built by The Airway Adventurer
+    </p>
+  </footer>
+
+</Layout>
+
+<style>
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--forest); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: 0.03em; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-menu a { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream80); text-decoration: none; transition: color 0.15s; }
+  .nav-menu a:hover { color: var(--cream); }
+  .nav-active { color: var(--cream) !important; border-bottom: 1.5px solid var(--orange); padding-bottom: 2px; }
+  .nav-pill { background: var(--orange); color: var(--cream) !important; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: space-between; width: 22px; height: 16px; background: none; border: none; cursor: pointer; padding: 0; }
+  .nav-toggle span { display: block; height: 2px; background: var(--cream); border-radius: 1px; }
+
+  /* ── SHARED ──────────────────────────────────────────────── */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+  .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+  .section-eyebrow.light { color: rgba(230,92,0,0.9); }
+  .section-title { font-family: var(--font-display); font-size: clamp(32px,4vw,44px); font-weight: 900; text-transform: uppercase; line-height: 0.95; color: var(--forest); margin-bottom: 2rem; }
+  .section-title.light { color: var(--cream); }
+  .inline-link { color: var(--orange); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: opacity 0.15s; }
+  .inline-link:hover { opacity: 0.75; }
+  .inline-link-light { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+  .btn { display: inline-block; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 11px 22px; border-radius: var(--radius-sm); transition: opacity 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-primary { background: var(--orange); color: var(--cream); border: none; }
+  .btn-ghost   { background: transparent; color: var(--cream80); border: 1.5px solid rgba(249,248,246,0.3); }
+  .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.6); }
+
+  /* ── PAGE HERO ───────────────────────────────────────────── */
+  .page-hero { background: var(--forest); padding: 4.5rem 0 0; }
+  .page-hero .container { padding-bottom: 2.5rem; }
+  .page-eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .page-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(52px,8vw,80px); line-height: 0.93; text-transform: uppercase; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-headline em { font-style: normal; color: var(--orange); }
+  .page-sub { font-size: 16px; line-height: 1.65; color: var(--cream80); max-width: 520px; margin-bottom: 2rem; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--cream80); background: var(--cream10); border: 1px solid var(--cream15); padding: 5px 12px; border-radius: 20px; transition: background 0.15s, color 0.15s; }
+  .chip:hover { background: var(--cream15); color: var(--cream); }
+  .hero-rule { display: flex; align-items: center; padding: 0 2rem; }
+  .rule-line { flex: 1; height: 3px; background: var(--orange); }
+  .rule-dot  { width: 10px; height: 10px; border-radius: 50%; background: var(--cream); border: 2px solid var(--orange); flex-shrink: 0; }
+
+  /* ── QUICK WINS ──────────────────────────────────────────── */
+  .quick-wins-section { background: var(--orange); padding: 3.5rem 0; }
+  .qw-header { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.5rem; }
+  .qw-header .section-eyebrow { color: rgba(249,248,246,0.7); }
+  .qw-header .section-title   { color: var(--cream); }
+  .qw-subhead { font-size: 16px; line-height: 1.6; color: rgba(249,248,246,0.82); max-width: 380px; margin-top: 3.5rem; }
+  .qw-list { display: flex; flex-direction: column; gap: 0; }
+  .qw-item { display: flex; align-items: center; gap: 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid rgba(249,248,246,0.2); }
+  .qw-item:last-child { border-bottom: none; }
+  .qw-num  { font-family: var(--font-display); font-size: 32px; font-weight: 900; color: rgba(249,248,246,0.25); line-height: 1; min-width: 44px; flex-shrink: 0; }
+  .qw-content { display: flex; align-items: flex-start; gap: 1rem; flex: 1; }
+  .qw-icon    { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .qw-action  { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--cream); margin-bottom: 0.25rem; }
+  .qw-why     { font-size: 14px; line-height: 1.55; color: rgba(249,248,246,0.8); margin: 0; }
+
+  /* ── PILLAR SECTIONS ─────────────────────────────────────── */
+  .pillar-section       { padding: 4.5rem 0; }
+  .pillar-section--light { background: var(--cream); }
+  .pillar-section--dark  { background: var(--forest); }
+  .pillar-section--warm  { background: #f7f2ec; }
+
+  .pillar-header { display: grid; grid-template-columns: 64px 1fr; gap: 1.5rem; align-items: start; margin-bottom: 2.5rem; }
+  .pillar-icon-wrap { font-size: 36px; line-height: 1; padding-top: 0.25rem; }
+  .pillar-lead { font-size: 16px; line-height: 1.7; color: var(--forest60); max-width: 620px; margin-top: 0.5rem; }
+  .pillar-lead.light { color: var(--cream80); }
+
+  /* ── TIP CARDS ───────────────────────────────────────────── */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .tip-card  { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; transition: box-shadow 0.15s; }
+  .tip-card:hover { box-shadow: 0 4px 18px rgba(30,63,32,0.08); }
+  .tip-card--dark { background: rgba(249,248,246,0.06); border-color: var(--cream15); }
+  .tip-card--warm { background: #fff; border-color: rgba(230,92,0,0.15); }
+
+  .tip-tag  { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); align-self: flex-start; }
+  .tip-tag--dark { color: rgba(230,92,0,0.85); }
+  .tip-tag--warm { color: var(--orange); }
+
+  .tip-title  { font-family: var(--font-display); font-size: 17px; font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1.15; }
+  .tip-title--dark { color: var(--cream); }
+
+  .tip-body   { font-size: 14px; line-height: 1.65; color: var(--forest60); margin: 0; }
+  .tip-body--dark { color: var(--cream80); }
+
+  /* ── HYDRATION SCALE ─────────────────────────────────────── */
+  .hydration-scale { margin: 2rem 0; }
+  .scale-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream50); margin-bottom: 0.75rem; }
+  .scale-bar   { display: grid; grid-template-columns: repeat(4, 1fr); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--cream15); }
+  .scale-seg   { padding: 0.75rem; display: flex; flex-direction: column; gap: 4px; }
+  .scale-seg span   { font-size: 11px; color: rgba(30,63,32,0.6); }
+  .scale-seg strong { font-family: var(--font-display); font-size: 13px; font-weight: 900; color: var(--forest); }
+
+  /* ── AIR QUALITY ─────────────────────────────────────────── */
+  .air-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .air-card { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.1rem 1.25rem; }
+  .air-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem; }
+  .air-icon     { font-size: 22px; line-height: 1; }
+  .impact-badge { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+  .impact-high   { background: rgba(220,38,38,0.1);  color: #991B1B; }
+  .impact-medium { background: rgba(217,119,6,0.12); color: #92400E; }
+  .air-label  { font-family: var(--font-display); font-size: 15px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.5rem; }
+  .air-action { font-size: 13.5px; line-height: 1.55; color: var(--forest60); margin: 0; }
+
+  /* ── CALLOUT BOXES ───────────────────────────────────────── */
+  .callout         { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem 1.25rem; border-radius: var(--radius-md); margin-top: 2rem; font-size: 15px; line-height: 1.65; }
+  .callout--info   { background: #EAF3DE; border-left: 3px solid var(--forest); color: var(--forest); }
+  .callout--cream  { background: rgba(249,248,246,0.08); border-left: 3px solid var(--orange); color: var(--cream80); }
+  .callout-icon    { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .callout strong  { font-weight: 600; display: block; margin-bottom: 0.25rem; color: inherit; }
+
+  /* ── PERSONAL NOTE ───────────────────────────────────────── */
+  .personal-note { background: rgba(230,92,0,0.06); border: 1px dashed rgba(230,92,0,0.3); border-radius: var(--radius-md); padding: 1.1rem 1.25rem; margin-top: 2rem; }
+  .personal-note--dark { background: rgba(249,248,246,0.06); border-color: rgba(249,248,246,0.2); }
+  .personal-note--warm { background: rgba(230,92,0,0.05); border-color: rgba(230,92,0,0.25); }
+  .pn-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 0.5rem; }
+  .personal-note p    { font-size: 14px; line-height: 1.65; color: var(--forest60); margin: 0; }
+  .personal-note--dark p { color: var(--cream50); }
+
+  /* ── DAILY ROUTINE ───────────────────────────────────────── */
+  .routine-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .routine-block { background: rgba(249,248,246,0.06); border: 1px solid var(--cream15); border-radius: var(--radius-md); padding: 1.5rem; }
+  .routine-block-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--cream15); }
+  .routine-icon { font-size: 22px; }
+  .routine-time { font-family: var(--font-display); font-size: 20px; font-weight: 900; text-transform: uppercase; color: var(--cream); }
+  .routine-steps { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .routine-step  { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--cream80); }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 6px; }
+
+  /* ── BREATHWORK ──────────────────────────────────────────── */
+  .breathwork-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+  .bw-card { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.5rem; display: grid; grid-template-columns: 1fr; gap: 0.75rem; position: relative; overflow: hidden; }
+  .bw-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--orange); }
+  .bw-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .bw-type  { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 0.3rem; }
+  .bw-name  { font-family: var(--font-display); font-size: 19px; font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1.1; }
+  .bw-body  { font-size: 15px; line-height: 1.7; color: var(--forest60); margin: 0; }
+  .bw-learn { display: flex; gap: 0.75rem; align-items: flex-start; background: rgba(230,92,0,0.06); border-radius: var(--radius-sm); padding: 0.75rem 1rem; }
+  .bw-learn-icon { font-size: 16px; flex-shrink: 0; }
+  .bw-learn p { font-size: 13.5px; line-height: 1.55; color: var(--forest); margin: 0; font-style: italic; }
+
+  /* ── CTA SECTION ─────────────────────────────────────────── */
+  .cta-section { background: var(--forest); padding: 4rem 0; }
+  .cta-inner   { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem; }
+  .cta-sub     { font-size: 15px; line-height: 1.6; color: var(--cream80); max-width: 400px; margin-top: 0.5rem; }
+  .cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { background: var(--forest); border-top: 3px solid var(--orange); padding: 2.5rem 2rem 1.5rem; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 1; min-width: 140px; }
+  .footer-brand .logo { font-size: 20px; display: inline-block; margin-bottom: 6px; }
+  .footer-tagline { font-size: 12px; color: var(--cream50); letter-spacing: 0.04em; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex: 2; }
+  .footer-nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cream50); text-decoration: none; transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--cream); }
+  .footer-nav a[href="/lifestyle"] { color: var(--cream); }
+  .footer-social { display: flex; gap: 10px; align-items: center; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cream15); border-radius: 50%; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--cream50); text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+  .footer-social a:hover { color: var(--cream); border-color: var(--cream50); }
+  .footer-legal { font-size: 12px; color: rgba(249,248,246,0.3); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--cream10); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .nav-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--forest); flex-direction: column; align-items: flex-start; gap: 0; padding: 0.5rem 0 1rem; border-top: 1px solid var(--cream15); }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 0.75rem 2rem; font-size: 14px; }
+    .nav-active { border-bottom: none; padding-bottom: 0.75rem; }
+    .nav-pill   { border-radius: 0; background: transparent !important; color: var(--orange) !important; }
+
+    .qw-header { flex-direction: column; gap: 0.75rem; }
+    .qw-header .qw-subhead { margin-top: 0; }
+    .qw-num { display: none; }
+
+    .pillar-header { grid-template-columns: 1fr; gap: 0.75rem; }
+
+    .routine-grid { grid-template-columns: 1fr; }
+    .scale-bar    { grid-template-columns: repeat(2, 1fr); }
+
+    .cta-inner    { flex-direction: column; gap: 1.5rem; }
+    .footer-inner { flex-direction: column; gap: 1.5rem; }
+  }
+</style>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS — mobile nav
+════════════════════════════════════════════════════════════ -->
+<script>
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+  const menu   = document.querySelector('.nav-menu')   as HTMLElement;
+  toggle?.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>

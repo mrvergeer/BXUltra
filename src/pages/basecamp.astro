@@ -1,0 +1,727 @@
+---
+// src/pages/basecamp.astro
+// BX Ultra — Basecamp (Community)
+// Structure: Nav → Hero → Community pitch → Platform cards → Guidelines → Spotlight → FAQ → CTA → Footer
+//
+// HOW TO MAINTAIN THIS PAGE:
+//   - Update `platforms` array with your real Discord/Strava/Instagram URLs when ready
+//   - Add real members to `spotlights` array as the community grows
+//   - Adjust `guidelines` and `faqs` to match how the community actually evolves
+//
+import Layout from '../layouts/Layout.astro';
+
+// ── PLATFORM CARDS ────────────────────────────────────────────────────────────
+// Replace href values with your real links when ready.
+const platforms = [
+  {
+    name:     "Discord",
+    handle:   "BX Ultra Server",
+    icon:     "💬",
+    href:     "https://discord.gg/placeholder",   // ← replace with your invite link
+    cta:      "Join the server",
+    accent:   "discord",
+    tagline:  "The main hub. Real-time conversation, support, and shared experience.",
+    channels: [
+      "# introductions — who you are, where you're from, your BX story",
+      "# training-logs — share sessions, ask questions, celebrate milestones",
+      "# the-lab-discussion — talk through research and what it means",
+      "# exacerbation-support — honest space for the hard days",
+      "# act-and-devices — what works, what doesn't, technique questions",
+      "# gear-and-kit — running, cycling, and BX management gear",
+      "# lifestyle-hub — food, sleep, air quality, daily management",
+    ],
+  },
+  {
+    name:     "Strava",
+    handle:   "BX Ultra Club",
+    icon:     "🏃",
+    href:     "https://www.strava.com/clubs/bxultra",  // ← replace with your club link
+    cta:      "Join the club",
+    accent:   "strava",
+    tagline:  "Training together, even when training alone. Your data, our community.",
+    channels: [
+      "Club activity feed — see what everyone's doing",
+      "Weekly mileage board — friendly accountability",
+      "Segment challenges — monthly targets for all levels",
+      "Race results — sharing finish lines, however small",
+    ],
+  },
+  {
+    name:     "Instagram",
+    handle:   "@bxultra",
+    icon:     "📸",
+    href:     "https://instagram.com/bxultra",  // ← replace when live
+    cta:      "Follow along",
+    accent:   "instagram",
+    tagline:  "The training feed. Milestones, landscapes, and honest moments from life with BX.",
+    channels: [
+      "Training shots and race moments",
+      "Community member spotlights",
+      "Research summaries in plain language",
+      "Behind-the-scenes of the journey",
+    ],
+  },
+  {
+    name:     "Reddit",
+    handle:   "r/Bronchiectasis",
+    icon:     "🔗",
+    href:     "https://reddit.com/r/Bronchiectasis",
+    cta:      "Visit the subreddit",
+    accent:   "reddit",
+    tagline:  "An existing community worth knowing about — not run by BX Ultra, but active and honest.",
+    channels: [
+      "Diagnosis experiences and questions",
+      "Treatment and medication discussions",
+      "Living with BX day-to-day",
+      "Research and news threads",
+    ],
+  },
+];
+
+// ── COMMUNITY GUIDELINES ──────────────────────────────────────────────────────
+const guidelines = [
+  {
+    icon:  "✅",
+    title: "Evidence over anecdote",
+    body:  "Share your experience freely — but when making factual claims about treatment or research, show your source. Opinion and experience are welcome; misinformation isn't.",
+  },
+  {
+    icon:  "✅",
+    title: "All levels, all goals",
+    body:  "Your 'ultra' might be a daily walk, a 5K, or an actual ultramarathon. Every goal is legitimate here. No gatekeeping on ambition.",
+  },
+  {
+    icon:  "✅",
+    title: "Honest about the hard days",
+    body:  "This community values authenticity over performance. Exacerbations, bad weeks, and setbacks are part of the reality — not things to hide.",
+  },
+  {
+    icon:  "✅",
+    title: "Supportive, not prescriptive",
+    body:  "You can share what works for you. You cannot tell others what to do medically. We're peers, not clinicians — and we respect that difference.",
+  },
+  {
+    icon:  "🚫",
+    title: "No miracle cures or supplement promotion",
+    body:  "The BX community is a target for unscrupulous health marketing. Claims about cures, paid supplement promotion, or medical advice will be removed.",
+  },
+  {
+    icon:  "🚫",
+    title: "No negativity about seeking help",
+    body:  "Exercise and active management are central to this community — but so is knowing when you need clinical support. Never discourage someone from seeing their doctor.",
+  },
+];
+
+// ── COMMUNITY SPOTLIGHTS ──────────────────────────────────────────────────────
+// Add real members here as the community grows.
+// Leave empty array for now — the section renders a "coming soon" state.
+const spotlights: {
+  name: string;
+  handle: string;
+  location: string;
+  goal: string;
+  quote: string;
+  sport: string;
+}[] = [
+  // Example entry (uncomment and fill in when you have real members):
+  // {
+  //   name:     "Sarah K.",
+  //   handle:   "@sarahk_runs",
+  //   location: "Utrecht, NL",
+  //   goal:     "First half marathon with BX",
+  //   quote:    "I thought diagnosis meant the end of running. Two years later I'm training for 21K.",
+  //   sport:    "Running",
+  // },
+];
+
+// ── FAQS ─────────────────────────────────────────────────────────────────────
+const faqs = [
+  {
+    q: "Is this community only for serious or competitive athletes?",
+    a: "Absolutely not. BX Ultra is for anyone with bronchiectasis who wants to be more active — whatever that means for them. The name is aspirational, not exclusionary. If your goal is to walk further without getting breathless, you belong here.",
+  },
+  {
+    q: "Do I need a bronchiectasis diagnosis to join?",
+    a: "The community is primarily for people with BX, but people with related conditions (PCD, NTM, chronic lung disease) are welcome. Family members and carers who want to understand and support are also welcome.",
+  },
+  {
+    q: "Is the Discord moderated?",
+    a: "Yes. The server is actively moderated against misinformation, supplement marketing, and anything that violates the community guidelines above. It's a small but growing space and the intention is to keep the quality of conversation high.",
+  },
+  {
+    q: "I was just diagnosed and I'm not ready to train. Is there still a place for me here?",
+    a: "Yes — especially here. The exacerbation support and introduction channels on Discord exist specifically for people at the beginning. You don't need to be training to be part of the community.",
+  },
+  {
+    q: "Can I suggest a research paper for The Lab?",
+    a: "Yes, and please do. Drop it in the #the-lab-discussion channel on Discord with a brief note on why you think it's relevant. If it meets the standard, it gets indexed.",
+  },
+  {
+    q: "How do I get featured in a Community Spotlight?",
+    a: "Spotlights are nominated by community members or self-submitted via Discord. There's no performance threshold — stories of persistence, adaptation, and honest experience are what we're looking for.",
+  },
+];
+---
+
+<Layout
+  title="Basecamp"
+  description="BX Ultra's community hub — Discord, Strava, Instagram, and Reddit. A space for people with bronchiectasis who want to be active, find each other, and train alongside people who understand."
+>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main">
+      <a href="/engine-room">Engine Room</a>
+      <a href="/lab">The Lab</a>
+      <a href="/lifestyle">Lifestyle Hub</a>
+      <a href="/basecamp" class="nav-active">Basecamp</a>
+      <a href="/what-is-bx" class="nav-pill">What is BX?</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="page-hero" aria-labelledby="basecamp-heading">
+    <div class="container">
+      <p class="page-eyebrow">Community · Connection · Belonging</p>
+      <h1 id="basecamp-heading" class="page-headline">Base<em>camp</em></h1>
+      <p class="page-sub">
+        Every big climb starts at basecamp. This is where people with
+        bronchiectasis find each other — to train alongside, share research,
+        be honest about hard days, and remind each other what's possible.
+      </p>
+
+      <!-- Live platform count pills -->
+      <div class="hero-platforms" aria-label="Community platforms">
+        <span class="platform-pill platform-pill--discord">💬 Discord</span>
+        <span class="platform-pill platform-pill--strava">🏃 Strava</span>
+        <span class="platform-pill platform-pill--ig">📸 Instagram</span>
+        <span class="platform-pill platform-pill--reddit">🔗 Reddit</span>
+      </div>
+    </div>
+    <div class="hero-rule" aria-hidden="true">
+      <span class="rule-line"></span>
+      <span class="rule-dot"></span>
+      <span class="rule-line"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       COMMUNITY PITCH
+  ══════════════════════════════════════════════════════════ -->
+  <section class="pitch-section" aria-labelledby="pitch-heading">
+    <div class="container pitch-grid">
+      <div class="pitch-text">
+        <p class="section-eyebrow">Why this exists</p>
+        <h2 id="pitch-heading" class="section-title">
+          You shouldn't have<br>to figure this out alone
+        </h2>
+        <p>
+          When you're diagnosed with bronchiectasis, the clinical system tells you
+          what the disease is and gives you a management plan. What it doesn't give
+          you is access to other people who are actually living it — who know what
+          it feels like to train around a productive cough, to cancel plans during
+          an exacerbation, to read a study at 11pm trying to understand why your
+          body does what it does.
+        </p>
+        <p>
+          Basecamp exists to fill that gap. It's not a support group in the
+          passive sense — it's an active community of people who are doing something
+          with their diagnosis. The culture here is honest, evidence-respecting,
+          and ambitious without being toxic. Whether you're three weeks post-diagnosis
+          or three years into training, there's a place for you here.
+        </p>
+      </div>
+      <div class="pitch-stats" aria-label="Community at a glance">
+        <div class="pitch-stat">
+          <span class="pitch-stat-val">Growing</span>
+          <span class="pitch-stat-label">Community — early days, ground floor</span>
+        </div>
+        <div class="pitch-stat">
+          <span class="pitch-stat-val">4</span>
+          <span class="pitch-stat-label">Platforms, one community</span>
+        </div>
+        <div class="pitch-stat">
+          <span class="pitch-stat-val">0</span>
+          <span class="pitch-stat-label">Tolerance for miracle cure claims</span>
+        </div>
+        <div class="pitch-stat">
+          <span class="pitch-stat-val">All</span>
+          <span class="pitch-stat-label">Levels of fitness welcome</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PLATFORM CARDS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="platforms-section" aria-labelledby="platforms-heading">
+    <div class="container">
+      <p class="section-eyebrow">Where to find us</p>
+      <h2 id="platforms-heading" class="section-title">Choose your platform</h2>
+
+      <div class="platforms-grid">
+        {platforms.map(p => (
+          <article class={`platform-card platform-card--${p.accent}`}>
+            <div class="platform-card-header">
+              <span class="platform-card-icon" aria-hidden="true">{p.icon}</span>
+              <div>
+                <h3 class="platform-name">{p.name}</h3>
+                <span class="platform-handle">{p.handle}</span>
+              </div>
+            </div>
+
+            <p class="platform-tagline">{p.tagline}</p>
+
+            <ul class="platform-channels" role="list" aria-label={`What's in ${p.name}`}>
+              {p.channels.map(ch => (
+                <li class="platform-channel">{ch}</li>
+              ))}
+            </ul>
+
+            <a
+              href={p.href}
+              class="platform-cta"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${p.cta} — opens in new tab`}
+            >
+              {p.cta} ↗
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       COMMUNITY GUIDELINES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="guidelines-section" aria-labelledby="guidelines-heading">
+    <div class="container">
+      <p class="section-eyebrow light">How we operate</p>
+      <h2 id="guidelines-heading" class="section-title light">Community guidelines</h2>
+      <p class="guidelines-intro">
+        The culture of a community is set early and maintained deliberately.
+        These are the principles Basecamp is built on.
+      </p>
+
+      <div class="guidelines-grid">
+        {guidelines.map(g => (
+          <article class="guideline-card">
+            <span class="guideline-icon" aria-hidden="true">{g.icon}</span>
+            <h3 class="guideline-title">{g.title}</h3>
+            <p class="guideline-body">{g.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       COMMUNITY SPOTLIGHT
+  ══════════════════════════════════════════════════════════ -->
+  <section class="spotlight-section" aria-labelledby="spotlight-heading">
+    <div class="container">
+      <p class="section-eyebrow">Real people, real stories</p>
+      <h2 id="spotlight-heading" class="section-title">Community Spotlight</h2>
+
+      {spotlights.length > 0 ? (
+        <div class="spotlight-grid">
+          {spotlights.map(s => (
+            <article class="spotlight-card">
+              <div class="spotlight-avatar" aria-hidden="true">
+                {s.name.charAt(0)}
+              </div>
+              <div class="spotlight-content">
+                <div class="spotlight-meta">
+                  <strong class="spotlight-name">{s.name}</strong>
+                  <span class="spotlight-handle">{s.handle}</span>
+                  <span class="spotlight-location">📍 {s.location}</span>
+                </div>
+                <span class="spotlight-sport">{s.sport}</span>
+                <blockquote class="spotlight-quote">"{s.quote}"</blockquote>
+                <p class="spotlight-goal">
+                  <span class="goal-label">Current goal:</span> {s.goal}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <!-- Empty state — shown until real spotlights exist -->
+        <div class="spotlight-empty">
+          <div class="spotlight-empty-inner">
+            <span class="empty-icon" aria-hidden="true">🏔</span>
+            <h3>Spotlights coming soon</h3>
+            <p>
+              As the community grows, this section will feature real members —
+              their stories, their goals, and what they've learned training with BX.
+              The first spotlights will be published once the Discord server is live.
+            </p>
+            <p class="empty-note">
+              Want to be among the first featured?
+              <a href={platforms[0].href} target="_blank" rel="noopener noreferrer" class="inline-link">
+                Introduce yourself on Discord →
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FAQ
+  ══════════════════════════════════════════════════════════ -->
+  <section class="faq-section" aria-labelledby="faq-heading">
+    <div class="container">
+      <p class="section-eyebrow light">Common questions</p>
+      <h2 id="faq-heading" class="section-title light">FAQ</h2>
+
+      <div class="faq-list" role="list">
+        {faqs.map((item, i) => (
+          <div class="faq-item" role="listitem">
+            <button
+              class="faq-question"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${i}`}
+              id={`faq-btn-${i}`}
+            >
+              <span>{item.q}</span>
+              <span class="faq-chevron" aria-hidden="true">↓</span>
+            </button>
+            <div
+              class="faq-answer"
+              id={`faq-answer-${i}`}
+              role="region"
+              aria-labelledby={`faq-btn-${i}`}
+              hidden
+            >
+              <p>{item.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FINAL CTA — Discord focus
+  ══════════════════════════════════════════════════════════ -->
+  <section class="final-cta" aria-label="Join the community">
+    <div class="container final-cta-inner">
+      <div class="final-cta-text">
+        <h2 class="final-cta-headline">
+          Come and say hello.
+        </h2>
+        <p class="final-cta-sub">
+          The best way in is through Discord. Introduce yourself in
+          #introductions — your name, your diagnosis story if you want to share
+          it, and what you're working toward. That's it.
+        </p>
+      </div>
+      <div class="final-cta-actions">
+        <a
+          href={platforms[0].href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-lg"
+        >
+          💬 Join Discord ↗
+        </a>
+        <a href="/about" class="btn btn-ghost">Read the story first →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+        <p class="footer-tagline">Breathe. Push. Repeat.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/engine-room">Engine Room</a>
+        <a href="/lab">The Lab</a>
+        <a href="/lifestyle">Lifestyle Hub</a>
+        <a href="/basecamp">Basecamp</a>
+        <a href="/what-is-bx">What is BX?</a>
+        <a href="/about">About</a>
+      </nav>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Discord"   rel="noopener noreferrer">DC</a>
+        <a href="#" aria-label="Strava"    rel="noopener noreferrer">ST</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      © {new Date().getFullYear()} BX Ultra · Built by The Airway Adventurer
+    </p>
+  </footer>
+
+</Layout>
+
+<style>
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--forest); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: 0.03em; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-menu a { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream80); text-decoration: none; transition: color 0.15s; }
+  .nav-menu a:hover { color: var(--cream); }
+  .nav-active { color: var(--cream) !important; border-bottom: 1.5px solid var(--orange); padding-bottom: 2px; }
+  .nav-pill { background: var(--orange); color: var(--cream) !important; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: space-between; width: 22px; height: 16px; background: none; border: none; cursor: pointer; padding: 0; }
+  .nav-toggle span { display: block; height: 2px; background: var(--cream); border-radius: 1px; }
+
+  /* ── SHARED ──────────────────────────────────────────────── */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+  .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+  .section-eyebrow.light { color: rgba(230,92,0,0.9); }
+  .section-title { font-family: var(--font-display); font-size: clamp(32px,4vw,44px); font-weight: 900; text-transform: uppercase; line-height: 0.95; color: var(--forest); margin-bottom: 2rem; }
+  .section-title.light { color: var(--cream); }
+  .inline-link { color: var(--orange); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: opacity 0.15s; }
+  .inline-link:hover { opacity: 0.75; }
+  .btn { display: inline-block; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 11px 22px; border-radius: var(--radius-sm); transition: opacity 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--orange); color: var(--cream); border: none; }
+  .btn-ghost   { background: transparent; color: var(--cream80); border: 1.5px solid rgba(249,248,246,0.3); }
+  .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.6); }
+  .btn-lg { font-size: 16px; padding: 14px 28px; }
+
+  /* ── PAGE HERO ───────────────────────────────────────────── */
+  .page-hero { background: var(--forest); padding: 4.5rem 0 0; }
+  .page-hero .container { padding-bottom: 2.5rem; }
+  .page-eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .page-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(52px,8vw,80px); line-height: 0.93; text-transform: uppercase; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-headline em { font-style: normal; color: var(--orange); }
+  .page-sub { font-size: 16px; line-height: 1.65; color: var(--cream80); max-width: 520px; margin-bottom: 2rem; }
+
+  .hero-platforms { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .platform-pill { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; padding: 6px 14px; border-radius: 20px; }
+  .platform-pill--discord  { background: rgba(88,101,242,0.2);  color: #a5b4fc; border: 1px solid rgba(88,101,242,0.3); }
+  .platform-pill--strava   { background: rgba(252,76,2,0.15);   color: #fc8c6a; border: 1px solid rgba(252,76,2,0.25); }
+  .platform-pill--ig       { background: rgba(225,48,108,0.15); color: #f9a8d4; border: 1px solid rgba(225,48,108,0.25); }
+  .platform-pill--reddit   { background: rgba(255,69,0,0.15);   color: #fca5a5; border: 1px solid rgba(255,69,0,0.25); }
+
+  .hero-rule { display: flex; align-items: center; padding: 0 2rem; }
+  .rule-line { flex: 1; height: 3px; background: var(--orange); }
+  .rule-dot  { width: 10px; height: 10px; border-radius: 50%; background: var(--cream); border: 2px solid var(--orange); flex-shrink: 0; }
+
+  /* ── PITCH SECTION ───────────────────────────────────────── */
+  .pitch-section { padding: 4.5rem 0; background: var(--cream); }
+  .pitch-grid    { display: grid; grid-template-columns: 1fr 260px; gap: 4rem; align-items: start; }
+  .pitch-text p  { font-size: 16px; line-height: 1.78; color: var(--forest); margin-bottom: 1.1rem; }
+  .pitch-text p:last-child { margin-bottom: 0; }
+
+  .pitch-stats { display: flex; flex-direction: column; gap: 0; border-left: 3px solid var(--orange); padding-left: 1.5rem; }
+  .pitch-stat  { padding: 1.25rem 0; border-bottom: 1px solid var(--forest15); }
+  .pitch-stat:last-child { border-bottom: none; }
+  .pitch-stat-val   { display: block; font-family: var(--font-display); font-size: 32px; font-weight: 900; color: var(--forest); line-height: 1; margin-bottom: 4px; }
+  .pitch-stat-label { font-size: 12px; color: var(--forest60); line-height: 1.4; }
+
+  /* ── PLATFORMS ───────────────────────────────────────────── */
+  .platforms-section { padding: 4rem 0 5rem; background: #f7f6f3; }
+  .platforms-grid    { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+
+  .platform-card {
+    background: #fff; border-radius: var(--radius-md);
+    padding: 1.75rem; display: flex; flex-direction: column; gap: 1rem;
+    border: 1px solid var(--forest15); position: relative; overflow: hidden;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .platform-card:hover { box-shadow: 0 6px 24px rgba(30,63,32,0.09); transform: translateY(-2px); }
+
+  /* Accent top border per platform */
+  .platform-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .platform-card--discord::before  { background: #5865F2; }
+  .platform-card--strava::before   { background: #FC4C02; }
+  .platform-card--instagram::before { background: linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045); }
+  .platform-card--reddit::before   { background: #FF4500; }
+
+  .platform-card-header { display: flex; align-items: center; gap: 1rem; }
+  .platform-card-icon   { font-size: 28px; flex-shrink: 0; }
+  .platform-name   { font-family: var(--font-display); font-size: 22px; font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1; }
+  .platform-handle { font-size: 13px; color: var(--forest60); display: block; margin-top: 2px; }
+  .platform-tagline { font-size: 14px; line-height: 1.6; color: var(--forest60); font-style: italic; border-left: 2px solid var(--forest15); padding-left: 0.75rem; margin: 0; }
+
+  .platform-channels { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+  .platform-channel  { font-size: 13px; line-height: 1.5; color: var(--forest60); padding-left: 1rem; position: relative; }
+  .platform-channel::before { content: '·'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+
+  .platform-cta {
+    display: inline-block; font-family: var(--font-display); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+    color: var(--cream); background: var(--forest); padding: 10px 18px;
+    border-radius: var(--radius-sm); align-self: flex-start;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .platform-cta:hover { background: var(--orange); transform: translateY(-1px); }
+
+  /* Platform-specific CTA colours on hover handled above */
+  .platform-card--discord  .platform-cta:hover { background: #5865F2; }
+  .platform-card--strava   .platform-cta:hover { background: #FC4C02; }
+  .platform-card--instagram .platform-cta:hover { background: #833ab4; }
+  .platform-card--reddit   .platform-cta:hover { background: #FF4500; }
+
+  /* ── GUIDELINES ──────────────────────────────────────────── */
+  .guidelines-section { background: var(--forest); padding: 4.5rem 0; }
+  .guidelines-intro   { font-size: 16px; line-height: 1.65; color: var(--cream80); max-width: 520px; margin-bottom: 2.5rem; margin-top: -1rem; }
+  .guidelines-grid    { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+  .guideline-card  { background: rgba(249,248,246,0.06); border: 1px solid var(--cream15); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .guideline-icon  { font-size: 22px; }
+  .guideline-title { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--cream); line-height: 1.15; }
+  .guideline-body  { font-size: 13.5px; line-height: 1.65; color: var(--cream80); margin: 0; }
+
+  /* ── SPOTLIGHT ───────────────────────────────────────────── */
+  .spotlight-section { padding: 4.5rem 0; background: var(--cream); }
+
+  .spotlight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+  .spotlight-card { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
+  .spotlight-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--forest); color: var(--cream); font-family: var(--font-display); font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .spotlight-content { display: flex; flex-direction: column; gap: 0.5rem; }
+  .spotlight-meta   { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; align-items: baseline; }
+  .spotlight-name   { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--forest); }
+  .spotlight-handle { font-size: 12px; color: var(--orange); }
+  .spotlight-location { font-size: 12px; color: var(--forest60); }
+  .spotlight-sport  { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); background: rgba(230,92,0,0.1); padding: 3px 8px; border-radius: 2px; align-self: flex-start; }
+  .spotlight-quote  { font-size: 15px; line-height: 1.65; color: var(--forest); font-style: italic; border-left: 2px solid var(--orange); padding-left: 0.75rem; margin: 0.25rem 0; }
+  .spotlight-goal   { font-size: 13px; color: var(--forest60); margin: 0; }
+  .goal-label       { font-weight: 600; color: var(--forest); }
+
+  /* Empty spotlight state */
+  .spotlight-empty { border: 2px dashed var(--forest15); border-radius: var(--radius-md); padding: 3.5rem 2rem; text-align: center; }
+  .spotlight-empty-inner { max-width: 420px; margin: 0 auto; }
+  .empty-icon { font-size: 40px; display: block; margin-bottom: 1rem; }
+  .spotlight-empty h3 { font-family: var(--font-display); font-size: 22px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.75rem; }
+  .spotlight-empty p  { font-size: 15px; line-height: 1.7; color: var(--forest60); margin-bottom: 0.75rem; }
+  .empty-note { font-size: 14px !important; }
+
+  /* ── FAQ ─────────────────────────────────────────────────── */
+  .faq-section { background: var(--forest); padding: 4.5rem 0; }
+  .faq-list    { display: flex; flex-direction: column; max-width: 740px; }
+
+  .faq-item { border-bottom: 1px solid var(--cream15); }
+  .faq-item:first-child { border-top: 1px solid var(--cream15); }
+
+  .faq-question {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; padding: 1.25rem 0; background: none; border: none; cursor: pointer;
+    text-align: left; font-size: 16px; font-weight: 500; color: var(--cream);
+    transition: color 0.15s;
+  }
+  .faq-question:hover { color: var(--orange); }
+  .faq-question[aria-expanded="true"] { color: var(--orange); }
+  .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+
+  .faq-chevron { font-size: 16px; flex-shrink: 0; transition: transform 0.2s; color: var(--orange); }
+
+  .faq-answer { padding: 0 0 1.25rem; }
+  .faq-answer p { font-size: 15px; line-height: 1.7; color: var(--cream80); margin: 0; }
+  .faq-answer[hidden] { display: none; }
+
+  /* ── FINAL CTA ───────────────────────────────────────────── */
+  .final-cta       { background: var(--orange); padding: 5rem 0; }
+  .final-cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem; }
+  .final-cta-headline { font-family: var(--font-display); font-size: clamp(36px,5vw,56px); font-weight: 900; text-transform: uppercase; color: var(--cream); line-height: 0.95; margin-bottom: 1rem; }
+  .final-cta-sub      { font-size: 16px; line-height: 1.65; color: rgba(249,248,246,0.85); max-width: 420px; }
+  .final-cta-actions  { display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column; align-items: flex-start; }
+
+  /* Override btn colours for the orange background */
+  .final-cta .btn-primary { background: var(--forest); color: var(--cream); }
+  .final-cta .btn-primary:hover { background: #152e17; }
+  .final-cta .btn-ghost   { color: rgba(249,248,246,0.85); border-color: rgba(249,248,246,0.35); }
+  .final-cta .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.7); }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { background: var(--forest); border-top: 3px solid var(--orange); padding: 2.5rem 2rem 1.5rem; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 1; min-width: 140px; }
+  .footer-brand .logo { font-size: 20px; display: inline-block; margin-bottom: 6px; }
+  .footer-tagline { font-size: 12px; color: var(--cream50); letter-spacing: 0.04em; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex: 2; }
+  .footer-nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cream50); text-decoration: none; transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--cream); }
+  .footer-nav a[href="/basecamp"] { color: var(--cream); }
+  .footer-social { display: flex; gap: 10px; align-items: center; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cream15); border-radius: 50%; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--cream50); text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+  .footer-social a:hover { color: var(--cream); border-color: var(--cream50); }
+  .footer-legal { font-size: 12px; color: rgba(249,248,246,0.3); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--cream10); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .nav-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--forest); flex-direction: column; align-items: flex-start; gap: 0; padding: 0.5rem 0 1rem; border-top: 1px solid var(--cream15); }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 0.75rem 2rem; font-size: 14px; }
+    .nav-active { border-bottom: none; padding-bottom: 0.75rem; }
+    .nav-pill   { border-radius: 0; background: transparent !important; color: var(--orange) !important; }
+
+    .pitch-grid       { grid-template-columns: 1fr; gap: 2rem; }
+    .pitch-stats      { border-left: none; border-top: 3px solid var(--orange); padding-left: 0; padding-top: 1.5rem; flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+    .pitch-stat       { border-bottom: none; padding: 0; min-width: 120px; }
+    .platforms-grid   { grid-template-columns: 1fr; }
+    .guidelines-grid  { grid-template-columns: 1fr; }
+    .final-cta-inner  { flex-direction: column; gap: 2rem; }
+    .final-cta-actions { flex-direction: column; align-items: stretch; }
+    .footer-inner     { flex-direction: column; gap: 1.5rem; }
+  }
+</style>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS — mobile nav + FAQ accordion
+════════════════════════════════════════════════════════════ -->
+<script>
+  // ── Mobile nav ─────────────────────────────────────────────
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+  const menu   = document.querySelector('.nav-menu')   as HTMLElement;
+  toggle?.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ── FAQ accordion ──────────────────────────────────────────
+  const faqBtns = document.querySelectorAll<HTMLButtonElement>('.faq-question');
+  faqBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const answerId = btn.getAttribute('aria-controls');
+      const answer   = answerId ? document.getElementById(answerId) : null;
+
+      // Close all others
+      faqBtns.forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        const id = b.getAttribute('aria-controls');
+        const el = id ? document.getElementById(id) : null;
+        if (el) el.hidden = true;
+      });
+
+      // Toggle this one
+      if (!expanded && answer) {
+        btn.setAttribute('aria-expanded', 'true');
+        answer.hidden = false;
+      }
+    });
+  });
+</script>
