@@ -1,0 +1,489 @@
+---
+// src/pages/start-here.astro
+// BX Ultra — Start Here
+// A routing page. Its only job: identify who the reader is and send them
+// to the right place immediately. Keep it short, warm, decisive.
+//
+// HOW TO MAINTAIN:
+//   - Update `featuredContent` links as you publish real posts
+//   - Rewrite the personal note as your voice develops
+//   - The three paths are intentionally permanent — don't add more
+//
+import Layout from '../layouts/Layout.astro';
+
+// ── THREE READER PATHS ────────────────────────────────────────────────────────
+const paths = [
+  {
+    id:       "new-diagnosis",
+    num:      "01",
+    icon:     "🫁",
+    headline: "I was just diagnosed",
+    sub:      "Or I'm still trying to make sense of what bronchiectasis actually means.",
+    body:     "Start with the What is BX? page. It's written in plain language — no jargon, no assumptions — and covers everything from how the disease works to what daily management looks like. Then come back here.",
+    cta:      "Go to What is BX? →",
+    href:     "/what-is-bx",
+    accent:   "path--teal",
+  },
+  {
+    id:       "want-to-train",
+    num:      "02",
+    icon:     "🏔",
+    headline: "I want to train with BX",
+    sub:      "I have a diagnosis and I want to know what's possible — and how to do it.",
+    body:     "The Engine Room is your first stop — that's where the training logs, session data, and race reports live. The Lifestyle Hub has the daily management framework. The Lab has the science behind why exercise is one of the best things you can do for BX.",
+    cta:      "Go to the Engine Room →",
+    href:     "/engine-room",
+    accent:   "path--orange",
+  },
+  {
+    id:       "supporting-someone",
+    num:      "03",
+    icon:     "🤝",
+    headline: "I'm supporting someone with BX",
+    sub:      "A partner, parent, friend, or carer trying to understand what their person is living with.",
+    body:     "The About page explains the thinking behind this site and the personal story behind it. What is BX? will give you the clinical picture without the jargon. And Basecamp has a community of people in similar situations who are often the best source of practical insight.",
+    cta:      "Read the story →",
+    href:     "/about",
+    accent:   "path--forest",
+  },
+];
+
+// ── MOST-READ CONTENT ─────────────────────────────────────────────────────────
+// Update these as you publish real content.
+const featured = [
+  {
+    label:  "If you read one thing",
+    title:  "What is Bronchiectasis?",
+    desc:   "The complete plain-language guide — symptoms, causes, diagnosis, treatment, and what exercise actually does for BX.",
+    href:   "/what-is-bx",
+    tag:    "Reference",
+  },
+  {
+    label:  "The athletic case",
+    title:  "Why exercise is one of the best things you can do for BX",
+    desc:   "The Cochrane meta-analysis on exercise in bronchiectasis — and what it means if you're trying to train.",
+    href:   "/lab",
+    tag:    "The Lab",
+  },
+  {
+    label:  "Daily management",
+    title:  "The Lifestyle Hub: six pillars for living well with BX",
+    desc:   "Nutrition, hydration, air quality, sleep, daily routine, and breathwork — practical, not theoretical.",
+    href:   "/lifestyle",
+    tag:    "Lifestyle Hub",
+  },
+];
+
+// ── SITE ORIENTATION ──────────────────────────────────────────────────────────
+const orientation = [
+  { icon: "🏃", label: "Engine Room", desc: "Training logs, race reports, and athletic data from one person's journey from 0 to ultra — with BX." },
+  { icon: "⚗",  label: "The Lab",     desc: "A filterable library of clinical studies, plus editorial posts interpreting what the research means for BX athletes." },
+  { icon: "🌿", label: "Lifestyle Hub", desc: "Practical daily management: nutrition, hydration, air quality, sleep, routine, and airway clearance." },
+  { icon: "💬", label: "Basecamp",    desc: "The community layer — Discord, Strava, and spotlights on people living actively with bronchiectasis." },
+];
+---
+
+<Layout
+  title="Start Here"
+  description="New to BX Ultra? Start here. Whether you were just diagnosed, want to train with bronchiectasis, or are supporting someone — find the right place for you."
+>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main">
+      <a href="/engine-room">Engine Room</a>
+      <a href="/lab">The Lab</a>
+      <a href="/lifestyle">Lifestyle Hub</a>
+      <a href="/basecamp">Basecamp</a>
+      <a href="/what-is-bx" class="nav-pill">What is BX?</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO — warm, direct, brief
+  ══════════════════════════════════════════════════════════ -->
+  <section class="page-hero" aria-labelledby="start-heading">
+    <div class="container">
+      <p class="page-eyebrow">Welcome · Orientation · Direction</p>
+      <h1 id="start-heading" class="page-headline">
+        Start<br><em>Here</em>
+      </h1>
+      <p class="page-sub">
+        Not sure where to go? You're in the right place.
+        Tell us which of these sounds most like you —
+        and we'll point you straight to what matters.
+      </p>
+    </div>
+    <div class="hero-rule" aria-hidden="true">
+      <span class="rule-line"></span>
+      <span class="rule-dot"></span>
+      <span class="rule-line"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       THREE PATHS — the centrepiece
+  ══════════════════════════════════════════════════════════ -->
+  <section class="paths-section" aria-labelledby="paths-heading">
+    <div class="container">
+      <h2 id="paths-heading" class="sr-only">Choose your path</h2>
+      <div class="paths-grid">
+        {paths.map(p => (
+          <article class={`path-card ${p.accent}`} id={p.id}>
+            <div class="path-card-top">
+              <span class="path-num" aria-hidden="true">{p.num}</span>
+              <span class="path-icon" aria-hidden="true">{p.icon}</span>
+            </div>
+            <h3 class="path-headline">{p.headline}</h3>
+            <p class="path-sub">{p.sub}</p>
+            <p class="path-body">{p.body}</p>
+            <a href={p.href} class="path-cta">{p.cta}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PERSONAL NOTE — the most important thing on the page
+  ══════════════════════════════════════════════════════════ -->
+  <section class="personal-section" aria-labelledby="personal-heading">
+    <div class="container personal-grid">
+      <div class="personal-sig" aria-hidden="true">
+        <span class="sig-bib">41</span>
+        <span class="sig-label">The Airway<br>Adventurer</span>
+      </div>
+      <div class="personal-content">
+        <p class="section-eyebrow light">A note from me</p>
+        <h2 id="personal-heading" class="personal-heading">
+          Whatever brought you here —<br>welcome.
+        </h2>
+        <p>
+          When I was diagnosed, the first thing I did was search the internet.
+          What came back was mostly clinical, often frightening, and almost entirely
+          focused on decline. There was very little about people who had decided to
+          push <em>toward</em> something — not despite the diagnosis, but with full
+          knowledge of it.
+        </p>
+        <p>
+          BX Ultra is what I wish had existed then. It's part training log, part
+          research library, part daily management guide, and part community. It's
+          built on a simple conviction: that the people who live well with
+          bronchiectasis are the ones who take an active role in understanding it —
+          and that "living well" can mean something genuinely ambitious.
+        </p>
+        <p>
+          You don't have to be trying to run an ultramarathon to belong here.
+          You just have to be trying. That's enough.
+        </p>
+        <p class="personal-sign">
+          — The Airway Adventurer
+          <span class="personal-location">· Matsumoto, Japan</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SITE ORIENTATION — what each section is
+  ══════════════════════════════════════════════════════════ -->
+  <section class="orientation-section" aria-labelledby="orientation-heading">
+    <div class="container">
+      <p class="section-eyebrow">The map</p>
+      <h2 id="orientation-heading" class="section-title">What's on this site</h2>
+      <div class="orientation-grid">
+        {orientation.map(o => (
+          <div class="orientation-item">
+            <span class="orientation-icon" aria-hidden="true">{o.icon}</span>
+            <div>
+              <strong class="orientation-label">{o.label}</strong>
+              <p class="orientation-desc">{o.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FEATURED CONTENT — three curated starting points
+  ══════════════════════════════════════════════════════════ -->
+  <section class="featured-section" aria-labelledby="featured-heading">
+    <div class="container">
+      <p class="section-eyebrow">Curated starting points</p>
+      <h2 id="featured-heading" class="section-title">Most useful, first</h2>
+      <div class="featured-grid">
+        {featured.map(f => (
+          <a href={f.href} class="featured-card">
+            <div class="featured-card-top">
+              <span class="featured-label">{f.label}</span>
+              <span class="featured-tag">{f.tag}</span>
+            </div>
+            <h3 class="featured-title">{f.title}</h3>
+            <p class="featured-desc">{f.desc}</p>
+            <span class="featured-cta">Read →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CLOSING STRIP — simple, human
+  ══════════════════════════════════════════════════════════ -->
+  <section class="closing-strip" aria-label="Closing message">
+    <div class="container closing-inner">
+      <h2 class="closing-headline">
+        Your diagnosis is the start line.<br>
+        <em>Not the finish.</em>
+      </h2>
+      <div class="closing-actions">
+        <a href="/what-is-bx"  class="btn btn-primary">Understand the disease →</a>
+        <a href="/engine-room" class="btn btn-ghost">See the training logs →</a>
+        <a href="/basecamp"    class="btn btn-ghost">Find the community →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+        <p class="footer-tagline">Breathe. Push. Repeat.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/engine-room">Engine Room</a>
+        <a href="/lab">The Lab</a>
+        <a href="/lifestyle">Lifestyle Hub</a>
+        <a href="/basecamp">Basecamp</a>
+        <a href="/what-is-bx">What is BX?</a>
+        <a href="/about">About</a>
+      </nav>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Discord"   rel="noopener noreferrer">DC</a>
+        <a href="#" aria-label="Strava"    rel="noopener noreferrer">ST</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      © {new Date().getFullYear()} BX Ultra · Built by The Airway Adventurer
+    </p>
+  </footer>
+
+</Layout>
+
+<style>
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--forest); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: 0.03em; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-menu a { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream80); text-decoration: none; transition: color 0.15s; }
+  .nav-menu a:hover { color: var(--cream); }
+  .nav-pill { background: var(--orange); color: var(--cream) !important; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: space-between; width: 22px; height: 16px; background: none; border: none; cursor: pointer; padding: 0; }
+  .nav-toggle span { display: block; height: 2px; background: var(--cream); border-radius: 1px; }
+
+  /* ── SHARED ──────────────────────────────────────────────── */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+  .section-eyebrow.light { color: rgba(230,92,0,0.9); }
+  .section-title { font-family: var(--font-display); font-size: clamp(32px,4vw,44px); font-weight: 900; text-transform: uppercase; line-height: 0.95; color: var(--forest); margin-bottom: 2rem; }
+  .btn { display: inline-block; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 11px 22px; border-radius: var(--radius-sm); transition: opacity 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--orange); color: var(--cream); border: none; }
+  .btn-ghost   { background: transparent; color: var(--cream80); border: 1.5px solid rgba(249,248,246,0.3); }
+  .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.6); }
+
+  /* ── PAGE HERO ───────────────────────────────────────────── */
+  .page-hero { background: var(--forest); padding: 4.5rem 0 0; }
+  .page-hero .container { padding-bottom: 2.5rem; }
+  .page-eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .page-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(60px,9vw,90px); line-height: 0.9; text-transform: uppercase; letter-spacing: -0.02em; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-headline em { font-style: normal; color: var(--orange); }
+  .page-sub { font-size: 17px; line-height: 1.65; color: var(--cream80); max-width: 480px; }
+  .hero-rule { display: flex; align-items: center; padding: 0 2rem; }
+  .rule-line { flex: 1; height: 3px; background: var(--orange); }
+  .rule-dot  { width: 10px; height: 10px; border-radius: 50%; background: var(--cream); border: 2px solid var(--orange); flex-shrink: 0; }
+
+  /* ── THREE PATHS ─────────────────────────────────────────── */
+  .paths-section { padding: 4rem 0 5rem; background: var(--cream); }
+  .paths-grid    { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+  .path-card {
+    border-radius: var(--radius-md); padding: 2rem 1.75rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .path-card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(30,63,32,0.12); }
+
+  /* Colour variants */
+  .path--teal   { background: #EAF3DE; border: 1.5px solid rgba(30,63,32,0.15); }
+  .path--orange { background: var(--forest); border: 1.5px solid rgba(249,248,246,0.08); }
+  .path--forest { background: #f0eeeb; border: 1.5px solid rgba(30,63,32,0.12); }
+
+  .path-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+  .path-num   { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); }
+  .path-icon  { font-size: 28px; line-height: 1; }
+
+  .path-headline {
+    font-family: var(--font-display); font-size: clamp(22px,2.5vw,28px);
+    font-weight: 900; text-transform: uppercase; line-height: 1;
+    color: var(--forest);
+  }
+  .path--orange .path-headline { color: var(--cream); }
+
+  .path-sub {
+    font-size: 14px; line-height: 1.55; font-style: italic;
+    color: var(--forest60); margin: 0;
+  }
+  .path--orange .path-sub { color: var(--cream50); }
+
+  .path-body {
+    font-size: 15px; line-height: 1.7; color: var(--forest);
+    flex: 1; margin: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(30,63,32,0.1);
+  }
+  .path--orange .path-body { color: var(--cream80); border-top-color: rgba(249,248,246,0.12); }
+
+  .path-cta {
+    display: inline-block; font-family: var(--font-display); font-size: 13px;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; color: var(--cream); background: var(--forest);
+    padding: 10px 18px; border-radius: var(--radius-sm); align-self: flex-start;
+    transition: background 0.15s, transform 0.1s; margin-top: 0.5rem;
+  }
+  .path-cta:hover { background: var(--orange); transform: translateY(-1px); }
+  .path--orange .path-cta { background: var(--orange); color: var(--cream); }
+  .path--orange .path-cta:hover { background: #c94f00; }
+
+  /* ── PERSONAL NOTE ───────────────────────────────────────── */
+  .personal-section { background: var(--forest); padding: 5rem 0; }
+  .personal-grid    { display: grid; grid-template-columns: 140px 1fr; gap: 4rem; align-items: start; }
+
+  /* Race bib signature */
+  .personal-sig   { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 8px; }
+  .sig-bib        { font-family: var(--font-display); font-size: 64px; font-weight: 900; color: var(--orange); line-height: 1; background: var(--cream); border-radius: var(--radius-sm); padding: 8px 16px; text-align: center; }
+  .sig-label      { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream50); text-align: center; line-height: 1.4; }
+
+  /* Content */
+  .personal-heading {
+    font-family: var(--font-display); font-size: clamp(26px,3.5vw,36px);
+    font-weight: 900; text-transform: uppercase; color: var(--cream);
+    line-height: 1.05; margin-bottom: 1.5rem;
+  }
+  .personal-content p {
+    font-size: 16px; line-height: 1.78; color: var(--cream80);
+    margin-bottom: 1.1rem; max-width: 580px;
+  }
+  .personal-content em { font-style: italic; color: var(--cream); }
+  .personal-sign {
+    font-family: var(--font-display); font-size: 15px; font-weight: 700;
+    letter-spacing: 0.04em; color: var(--orange) !important;
+    margin-top: 0.5rem !important;
+  }
+  .personal-location { color: var(--cream50); font-weight: 400; }
+
+  /* ── SITE ORIENTATION ────────────────────────────────────── */
+  .orientation-section { padding: 4rem 0; background: #f7f6f3; }
+  .orientation-grid    { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .orientation-item    { display: flex; gap: 1rem; align-items: flex-start; background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.25rem; }
+  .orientation-icon    { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .orientation-label   { font-family: var(--font-display); font-size: 17px; font-weight: 900; text-transform: uppercase; color: var(--forest); display: block; margin-bottom: 0.4rem; }
+  .orientation-desc    { font-size: 14px; line-height: 1.6; color: var(--forest60); margin: 0; }
+
+  /* ── FEATURED CONTENT ────────────────────────────────────── */
+  .featured-section { padding: 4rem 0 5rem; background: var(--cream); }
+  .featured-grid    { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+  .featured-card {
+    background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md);
+    padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem;
+    text-decoration: none; position: relative; overflow: hidden;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .featured-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--orange); }
+  .featured-card:hover   { box-shadow: 0 6px 24px rgba(30,63,32,0.09); transform: translateY(-2px); }
+
+  .featured-card-top { display: flex; justify-content: space-between; align-items: center; }
+  .featured-label { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); }
+  .featured-tag   { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--forest60); background: #f0eeeb; padding: 3px 8px; border-radius: 2px; }
+  .featured-title { font-family: var(--font-display); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1.15; }
+  .featured-desc  { font-size: 14px; line-height: 1.6; color: var(--forest60); flex: 1; margin: 0; }
+  .featured-cta   { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); border-bottom: 1.5px solid var(--orange); padding-bottom: 1px; align-self: flex-start; margin-top: auto; }
+
+  /* ── CLOSING STRIP ───────────────────────────────────────── */
+  .closing-strip { background: var(--orange); padding: 5rem 0; }
+  .closing-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem; }
+  .closing-headline { font-family: var(--font-display); font-size: clamp(28px,4vw,48px); font-weight: 900; text-transform: uppercase; color: var(--cream); line-height: 1; }
+  .closing-headline em { font-style: normal; color: var(--forest); }
+  .closing-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column; align-items: flex-start; }
+
+  /* Override btn on orange background */
+  .closing-strip .btn-primary { background: var(--forest); color: var(--cream); }
+  .closing-strip .btn-primary:hover { background: #152e17; }
+  .closing-strip .btn-ghost   { color: rgba(249,248,246,0.85); border-color: rgba(249,248,246,0.35); }
+  .closing-strip .btn-ghost:hover { color: var(--cream); border-color: rgba(249,248,246,0.7); }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { background: var(--forest); border-top: 3px solid var(--orange); padding: 2.5rem 2rem 1.5rem; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 1; min-width: 140px; }
+  .footer-brand .logo { font-size: 20px; display: inline-block; margin-bottom: 6px; }
+  .footer-tagline { font-size: 12px; color: var(--cream50); letter-spacing: 0.04em; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex: 2; }
+  .footer-nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cream50); text-decoration: none; transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--cream); }
+  .footer-social { display: flex; gap: 10px; align-items: center; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cream15); border-radius: 50%; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--cream50); text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+  .footer-social a:hover { color: var(--cream); border-color: var(--cream50); }
+  .footer-legal { font-size: 12px; color: rgba(249,248,246,0.3); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--cream10); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .nav-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--forest); flex-direction: column; align-items: flex-start; gap: 0; padding: 0.5rem 0 1rem; border-top: 1px solid var(--cream15); }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 0.75rem 2rem; font-size: 14px; }
+    .nav-pill { border-radius: 0; background: transparent !important; color: var(--orange) !important; }
+
+    .paths-grid      { grid-template-columns: 1fr; }
+    .personal-grid   { grid-template-columns: 1fr; gap: 2rem; }
+    .personal-sig    { flex-direction: row; align-items: center; gap: 1rem; }
+    .sig-bib         { font-size: 44px; }
+    .orientation-grid { grid-template-columns: 1fr; }
+    .featured-grid   { grid-template-columns: 1fr; }
+    .closing-inner   { flex-direction: column; gap: 2rem; }
+    .closing-actions { flex-direction: column; align-items: stretch; }
+    .footer-inner    { flex-direction: column; gap: 1.5rem; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+  const menu   = document.querySelector('.nav-menu')   as HTMLElement;
+  toggle?.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>

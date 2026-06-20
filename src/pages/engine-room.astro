@@ -1,0 +1,859 @@
+---
+// src/pages/engine-room.astro
+// BX Ultra — The Engine Room
+// Personal training logs, race reports, and athletic data.
+//
+// HOW TO MAINTAIN:
+//   1. Add new log entries to `logEntries` array — newest first
+//   2. Update `currentBlock` when your training phase changes
+//   3. Update `stats` monthly with real cumulative numbers
+//   4. Update `goals` as you hit milestones or set new ones
+//   5. Add race reports to `raceReports` array when you complete events
+//
+// FUTURE: When you have enough entries, move logs to individual .md files
+// under src/content/logs/ and use Astro's Content Collections to load them.
+// Ask for that template when you're ready to scale up.
+//
+import Layout from '../layouts/Layout.astro';
+
+// ── CURRENT TRAINING BLOCK ────────────────────────────────────────────────────
+// Update this when your training phase changes.
+const currentBlock = {
+  name:       "Base Building — Phase 1",
+  goal:       "Establish consistent aerobic base. Zone 2 focus. 4 sessions/week.",
+  weekNumber: 4,
+  startDate:  "2025-05-05",
+  endDate:    "2025-07-27",
+  focus:      ["Zone 2 running", "Airway clearance consistency", "Sleep tracking", "ACT pre-session habit"],
+};
+
+// ── CUMULATIVE STATS ──────────────────────────────────────────────────────────
+// Update these monthly with real numbers.
+const stats = [
+  { value: "4",      label: "Weeks training",       unit: ""   },
+  { value: "18",     label: "Sessions completed",   unit: ""   },
+  { value: "87",     label: "Kilometres logged",    unit: "km" },
+  { value: "0",      label: "Exacerbations",        unit: ""   },
+  { value: "Zone 2", label: "Primary training zone",unit: ""   },
+  { value: "↑",      label: "Energy trend",         unit: ""   },
+];
+
+// ── TRAINING LOG ENTRIES ──────────────────────────────────────────────────────
+// Add new entries here. Newest first.
+// type: "Run" | "Cycle" | "Strength" | "Recovery" | "Race" | "Physio"
+// feel: 1–5 (1 = rough day, 5 = best day)
+// lungs: "Clear" | "Some mucus" | "Heavy" | "Post-clearance"
+// zone: "Zone 1" | "Zone 2" | "Zone 3" | "Zone 4" | "Mixed"
+const logEntries = [
+  {
+    id:       "2025-06-07-run",
+    date:     "2025-06-07",
+    type:     "Run",
+    title:    "Week 4 — First 10km without stopping",
+    distance: 10.2,
+    duration: "1:04:30",
+    zone:     "Zone 2",
+    feel:     4,
+    lungs:    "Post-clearance",
+    summary:  "Big milestone today. 10.2km, full Zone 2, no walking breaks. Held 138bpm average throughout. Lungs were clear after morning ACT — the pre-run clearance protocol is working. Slight fatigue in the final 2km but breathing stayed controlled.",
+    highlight: true,
+  },
+  {
+    id:       "2025-06-05-cycle",
+    date:     "2025-06-05",
+    type:     "Cycle",
+    title:    "60 min Zone 2 indoor — recovery focus",
+    distance: 28,
+    duration: "1:00:00",
+    zone:     "Zone 2",
+    feel:     3,
+    lungs:    "Some mucus",
+    summary:  "Sputum slightly increased this morning — yellow-tinged, which I'm watching. Did a longer ACT session before getting on the bike. Kept HR strictly below 130. Everything felt manageable. No fever, energy was okay. Monitoring closely.",
+    highlight: false,
+  },
+  {
+    id:       "2025-06-03-run",
+    date:     "2025-06-03",
+    type:     "Run",
+    title:    "8km easy — morning protocol test",
+    distance: 8.1,
+    duration: "52:10",
+    zone:     "Zone 2",
+    feel:     4,
+    lungs:    "Clear",
+    summary:  "Testing the full morning protocol: water on waking, 20 min ACT, 45 min gap, then run. Best start to a session in weeks. Breathing felt genuinely easy for the first 5km. This is the difference the pre-run clearance makes.",
+    highlight: false,
+  },
+  {
+    id:       "2025-05-31-strength",
+    date:     "2025-05-31",
+    type:     "Strength",
+    title:    "Respiratory muscle + lower body",
+    distance: null,
+    duration: "45:00",
+    zone:     null,
+    feel:     4,
+    lungs:    "Clear",
+    summary:  "First dedicated strength session. Focus on respiratory muscle work (breathing against resistance) plus squats, single-leg work, and hip strength. No breathlessness issues. Actually felt energising rather than depleting.",
+    highlight: false,
+  },
+  {
+    id:       "2025-05-28-run",
+    date:     "2025-05-28",
+    type:     "Run",
+    title:    "Week 3 — hard day but showed up",
+    distance: 6.4,
+    duration: "44:00",
+    zone:     "Mixed",
+    feel:     2,
+    lungs:    "Heavy",
+    summary:  "Bad morning. Sputum heavy, ACT took longer than usual, energy low. Nearly didn't go. Did 6.4km at a very easy pace — walked two sections. But I went. That matters. This is what managing BX around training actually looks like on the hard days.",
+    highlight: false,
+  },
+  {
+    id:       "2025-05-25-physio",
+    date:     "2025-05-25",
+    type:     "Physio",
+    title:    "Respiratory physio check-in + ACT review",
+    distance: null,
+    duration: "60:00",
+    zone:     null,
+    feel:     5,
+    lungs:    "Post-clearance",
+    summary:  "Quarterly check-in with my respiratory physio. Reviewed ACT technique — she identified I was rushing the thoracic expansion phase. Small adjustment, immediate difference in clearance effectiveness. Also discussed training load given current phase. Green light to increase volume slowly.",
+    highlight: true,
+  },
+  {
+    id:       "2025-05-21-run",
+    date:     "2025-05-21",
+    type:     "Run",
+    title:    "Week 2 — 7km, first real Zone 2 session",
+    distance: 7.0,
+    duration: "48:20",
+    zone:     "Zone 2",
+    feel:     3,
+    lungs:    "Post-clearance",
+    summary:  "First session where I actually stayed in Zone 2 the whole time using HR monitor. Harder than expected — had to slow to a walk twice to keep HR below 140. Humbling but the right approach. Zone 2 is the foundation.",
+    highlight: false,
+  },
+  {
+    id:       "2025-05-14-run",
+    date:     "2025-05-14",
+    type:     "Run",
+    title:    "Week 1 — 5km. Starting from zero.",
+    distance: 5.0,
+    duration: "34:15",
+    zone:     "Zone 2",
+    feel:     3,
+    lungs:    "Some mucus",
+    summary:  "Week one. 5km. That's where we start. The lungs are what they are. The goal is what it is. The distance between them is the project. First session logged.",
+    highlight: true,
+  },
+];
+
+// ── RACE REPORTS ──────────────────────────────────────────────────────────────
+// Add completed events here.
+const raceReports: {
+  id: string;
+  date: string;
+  event: string;
+  distance: number;
+  time: string;
+  location: string;
+  summary: string;
+  result: string;
+}[] = [
+  // Uncomment when you complete your first event:
+  // {
+  //   id:       "2025-09-race-1",
+  //   date:     "2025-09-00",
+  //   event:    "Your first event name",
+  //   distance: 10,
+  //   time:     "00:00:00",
+  //   location: "Location",
+  //   summary:  "Race report here.",
+  //   result:   "Finished",
+  // },
+];
+
+// ── GOAL TRACKER ──────────────────────────────────────────────────────────────
+// Update progress values as milestones are hit.
+// progress: 0–100 (percentage)
+const goals = [
+  {
+    title:    "Run 10km non-stop",
+    status:   "done",
+    progress: 100,
+    date:     "Achieved June 7, 2025",
+    note:     "Week 4. First real milestone.",
+  },
+  {
+    title:    "Complete a 21.1km half marathon",
+    status:   "active",
+    progress: 15,
+    date:     "Target: Late 2025",
+    note:     "Base phase underway. Building toward this steadily.",
+  },
+  {
+    title:    "Complete a full marathon (42.2km)",
+    status:   "future",
+    progress: 0,
+    date:     "Target: 2026",
+    note:     "The stepping stone before ultra distance.",
+  },
+  {
+    title:    "Complete an ultramarathon (50km+)",
+    status:   "future",
+    progress: 0,
+    date:     "Target: 2027",
+    note:     "The big one. The reason this site exists.",
+  },
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+const typeColors: Record<string, string> = {
+  "Run":      "type-run",
+  "Cycle":    "type-cycle",
+  "Strength": "type-strength",
+  "Recovery": "type-recovery",
+  "Race":     "type-race",
+  "Physio":   "type-physio",
+};
+
+const feelLabels: Record<number, string> = { 1: "Rough", 2: "Hard", 3: "Okay", 4: "Good", 5: "Great" };
+const feelColors: Record<number, string> = { 1: "feel-1", 2: "feel-2", 3: "feel-3", 4: "feel-4", 5: "feel-5" };
+
+const allTypes = ["All", "Run", "Cycle", "Strength", "Physio", "Recovery", "Race"];
+---
+
+<Layout
+  title="Engine Room"
+  description="BX Ultra training logs — real session data, race reports, and the ongoing athletic journey of one person with bronchiectasis training toward ultra distance."
+>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main">
+      <a href="/engine-room" class="nav-active">Engine Room</a>
+      <a href="/lab">The Lab</a>
+      <a href="/lifestyle">Lifestyle Hub</a>
+      <a href="/basecamp">Basecamp</a>
+      <a href="/what-is-bx" class="nav-pill">What is BX?</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PAGE HERO — goal-focused, data-forward
+  ══════════════════════════════════════════════════════════ -->
+  <section class="page-hero" aria-labelledby="er-heading">
+    <div class="container">
+      <p class="page-eyebrow">Training logs · Race reports · Athletic data</p>
+      <h1 id="er-heading" class="page-headline">The Engine<br><em>Room</em></h1>
+      <p class="page-sub">
+        One person. Bronchiectasis. A target that most people would call unrealistic.
+        Every session logged, every setback recorded, every milestone documented.
+        This is what training with BX actually looks like — week by week.
+      </p>
+
+      <!-- Current block pill -->
+      <div class="hero-block-pill" aria-label="Current training block">
+        <span class="block-pill-label" aria-hidden="true">Current block</span>
+        <span class="block-pill-name">{currentBlock.name}</span>
+        <span class="block-pill-week">Week {currentBlock.weekNumber}</span>
+      </div>
+    </div>
+    <div class="hero-rule" aria-hidden="true">
+      <span class="rule-line"></span>
+      <span class="rule-dot"></span>
+      <span class="rule-line"></span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATS DASHBOARD
+  ══════════════════════════════════════════════════════════ -->
+  <div class="stats-bar" role="region" aria-label="Training statistics">
+    <div class="container stats-grid">
+      {stats.map(s => (
+        <div class="stat-item">
+          <span class="stat-value">
+            {s.value}{s.unit && <span class="stat-unit">{s.unit}</span>}
+          </span>
+          <span class="stat-label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CURRENT BLOCK DETAIL
+  ══════════════════════════════════════════════════════════ -->
+  <section class="block-section" aria-labelledby="block-heading">
+    <div class="container block-grid">
+      <div>
+        <p class="section-eyebrow">Right now</p>
+        <h2 id="block-heading" class="section-title" style="margin-bottom:0.75rem">
+          {currentBlock.name}
+        </h2>
+        <p class="block-goal">{currentBlock.goal}</p>
+      </div>
+      <div class="block-focus">
+        <p class="block-focus-label">Focus areas this block</p>
+        <ul class="block-focus-list" role="list">
+          {currentBlock.focus.map(f => (
+            <li class="block-focus-item">
+              <span class="focus-dot" aria-hidden="true"></span>
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       GOAL TRACKER
+  ══════════════════════════════════════════════════════════ -->
+  <section class="goals-section" aria-labelledby="goals-heading">
+    <div class="container">
+      <p class="section-eyebrow light">The big picture</p>
+      <h2 id="goals-heading" class="section-title light">Goal tracker</h2>
+      <div class="goals-list">
+        {goals.map(g => (
+          <article class={`goal-item goal-item--${g.status}`} aria-label={g.title}>
+            <div class="goal-header">
+              <div class="goal-title-row">
+                <span class={`goal-status-dot goal-dot--${g.status}`} aria-hidden="true"></span>
+                <h3 class="goal-title">{g.title}</h3>
+              </div>
+              <span class="goal-date">{g.date}</span>
+            </div>
+            <div class="goal-progress-bar" role="progressbar" aria-valuenow={g.progress} aria-valuemin={0} aria-valuemax={100} aria-label={`${g.progress}% complete`}>
+              <div class="goal-progress-fill" style={`width: ${g.progress}%`}></div>
+            </div>
+            <div class="goal-footer">
+              <span class="goal-note">{g.note}</span>
+              <span class="goal-pct">{g.progress}%</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TRAINING LOG — filterable
+  ══════════════════════════════════════════════════════════ -->
+  <section class="log-section" aria-labelledby="log-heading">
+    <div class="container">
+      <p class="section-eyebrow">Every session</p>
+      <h2 id="log-heading" class="section-title">Training log</h2>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" role="group" aria-label="Filter by session type">
+        <span class="filter-label">Session type:</span>
+        <div class="filter-chips">
+          {allTypes.map((t, i) => (
+            <button
+              class={`filter-btn${i === 0 ? ' filter-btn--active' : ''}`}
+              data-type={t}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="log-legend" aria-label="Legend">
+        <span class="legend-item">
+          <span class="legend-dot legend-dot--done" aria-hidden="true"></span>
+          Highlight session
+        </span>
+        <span class="legend-item">Feel: <span class="feel-scale">1 Rough → 5 Great</span></span>
+        <span class="legend-item">Lungs: status at time of session</span>
+      </div>
+
+      <!-- Log entries -->
+      <div class="log-list" id="log-list" role="list">
+        {logEntries.map(entry => (
+          <article
+            class={`log-entry${entry.highlight ? ' log-entry--highlight' : ''}`}
+            data-type={entry.type}
+            id={entry.id}
+            role="listitem"
+          >
+            <!-- Left: date + type -->
+            <div class="entry-meta">
+              <time class="entry-date" datetime={entry.date}>{formatDate(entry.date)}</time>
+              <span class={`entry-type ${typeColors[entry.type] ?? ''}`}>{entry.type}</span>
+            </div>
+
+            <!-- Centre: main content -->
+            <div class="entry-content">
+              <h3 class="entry-title">{entry.title}</h3>
+
+              <!-- Data row -->
+              <div class="entry-data" aria-label="Session data">
+                {entry.distance && (
+                  <span class="data-chip">
+                    <span class="data-icon" aria-hidden="true">📍</span>
+                    {entry.distance}km
+                  </span>
+                )}
+                {entry.duration && (
+                  <span class="data-chip">
+                    <span class="data-icon" aria-hidden="true">⏱</span>
+                    {entry.duration}
+                  </span>
+                )}
+                {entry.zone && (
+                  <span class="data-chip">
+                    <span class="data-icon" aria-hidden="true">❤️</span>
+                    {entry.zone}
+                  </span>
+                )}
+                <span class={`data-chip data-chip--feel ${feelColors[entry.feel]}`} aria-label={`Feel: ${feelLabels[entry.feel]}`}>
+                  Feel: {entry.feel}/5 · {feelLabels[entry.feel]}
+                </span>
+                <span class="data-chip data-chip--lungs" aria-label={`Lungs: ${entry.lungs}`}>
+                  <span aria-hidden="true">🫁</span> {entry.lungs}
+                </span>
+              </div>
+
+              <p class="entry-summary">{entry.summary}</p>
+            </div>
+
+            {entry.highlight && (
+              <div class="entry-highlight-flag" aria-label="Highlight session">
+                ★
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state" hidden aria-live="polite">
+        <p>No entries of this type yet. Check back as the log grows.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       RACE REPORTS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="race-section" aria-labelledby="race-heading">
+    <div class="container">
+      <p class="section-eyebrow">Events</p>
+      <h2 id="race-heading" class="section-title">Race reports</h2>
+
+      {raceReports.length > 0 ? (
+        <div class="race-grid">
+          {raceReports.map(r => (
+            <article class="race-card">
+              <div class="race-card-top">
+                <time class="race-date" datetime={r.date}>{formatDate(r.date)}</time>
+                <span class="race-result">{r.result}</span>
+              </div>
+              <h3 class="race-event">{r.event}</h3>
+              <p class="race-location">📍 {r.location}</p>
+              <div class="race-data">
+                <span>{r.distance}km</span>
+                <span>{r.time}</span>
+              </div>
+              <p class="race-summary">{r.summary}</p>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="race-empty">
+          <div class="race-empty-inner">
+            <span class="race-empty-icon" aria-hidden="true">🏁</span>
+            <h3>First event pending</h3>
+            <p>
+              Race reports will appear here after the first event is completed.
+              The current training block is building toward a first 10K race
+              in the second half of 2025.
+            </p>
+            <p class="race-empty-note">
+              Follow the training build in the log above — or
+              <a href="/basecamp" class="inline-link">join Basecamp</a>
+              to get updates when race reports are published.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HOW THE LOGS WORK — context for new visitors
+  ══════════════════════════════════════════════════════════ -->
+  <section class="how-section" aria-labelledby="how-heading">
+    <div class="container">
+      <p class="section-eyebrow light">How to read these logs</p>
+      <h2 id="how-heading" class="section-title light">The format</h2>
+      <div class="how-grid">
+        <div class="how-card">
+          <span class="how-icon" aria-hidden="true">📊</span>
+          <h3>The data</h3>
+          <p>Distance, duration, heart rate zone, and feel score (1–5) for each session. These numbers matter less than the pattern over time — what changes, what stays consistent, what correlates with lung status.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-icon" aria-hidden="true">🫁</span>
+          <h3>Lung status</h3>
+          <p>Every entry records how the lungs were at the time of the session — clear, some mucus, heavy, or post-clearance. This is the layer that makes these logs different from a standard training diary.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-icon" aria-hidden="true">💬</span>
+          <h3>The commentary</h3>
+          <p>Each entry has a short written note — what actually happened, how it felt, what was learned. The numbers are context; the words are the story.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-icon" aria-hidden="true">★</span>
+          <h3>Highlight sessions</h3>
+          <p>Starred entries mark meaningful moments — a first milestone, a breakthrough session, or an honest record of a hard day that was worth showing up for anyway.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CTA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="cta-section" aria-label="Related sections">
+    <div class="container cta-inner">
+      <div>
+        <p class="section-eyebrow">Go deeper</p>
+        <h2 class="cta-headline">The science behind the sessions</h2>
+        <p class="cta-sub">The Lab has the research on exercise and bronchiectasis. The Lifestyle Hub has the daily management framework that makes training possible.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="/lab"       class="btn btn-primary">The Lab →</a>
+        <a href="/lifestyle" class="btn btn-ghost-dark">Lifestyle Hub →</a>
+        <a href="/basecamp"  class="btn btn-ghost-dark">Community →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="BX Ultra home">BX<span>ULTRA</span></a>
+        <p class="footer-tagline">Breathe. Push. Repeat.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/engine-room">Engine Room</a>
+        <a href="/lab">The Lab</a>
+        <a href="/lifestyle">Lifestyle Hub</a>
+        <a href="/basecamp">Basecamp</a>
+        <a href="/what-is-bx">What is BX?</a>
+        <a href="/about">About</a>
+      </nav>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Discord"   rel="noopener noreferrer">DC</a>
+        <a href="#" aria-label="Strava"    rel="noopener noreferrer">ST</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      © {new Date().getFullYear()} BX Ultra · Built by The Airway Adventurer
+    </p>
+  </footer>
+
+</Layout>
+
+<style>
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--forest); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: 0.03em; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-menu a { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream80); text-decoration: none; transition: color 0.15s; }
+  .nav-menu a:hover { color: var(--cream); }
+  .nav-active { color: var(--cream) !important; border-bottom: 1.5px solid var(--orange); padding-bottom: 2px; }
+  .nav-pill { background: var(--orange); color: var(--cream) !important; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: space-between; width: 22px; height: 16px; background: none; border: none; cursor: pointer; padding: 0; }
+  .nav-toggle span { display: block; height: 2px; background: var(--cream); border-radius: 1px; }
+
+  /* ── SHARED ──────────────────────────────────────────────── */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+  .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+  .section-eyebrow.light { color: rgba(230,92,0,0.9); }
+  .section-title { font-family: var(--font-display); font-size: clamp(32px,4vw,44px); font-weight: 900; text-transform: uppercase; line-height: 0.95; color: var(--forest); margin-bottom: 2rem; }
+  .section-title.light { color: var(--cream); }
+  .inline-link { color: var(--orange); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: opacity 0.15s; }
+  .inline-link:hover { opacity: 0.75; }
+  .btn { display: inline-block; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 11px 22px; border-radius: var(--radius-sm); transition: opacity 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary    { background: var(--orange); color: var(--cream); border: none; }
+  .btn-ghost-dark { background: transparent; color: var(--forest); border: 1.5px solid var(--forest15); }
+  .btn-ghost-dark:hover { border-color: var(--forest); }
+
+  /* ── PAGE HERO ───────────────────────────────────────────── */
+  .page-hero { background: var(--forest); padding: 4.5rem 0 0; }
+  .page-hero .container { padding-bottom: 2.5rem; }
+  .page-eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.75rem; }
+  .page-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(52px,8vw,80px); line-height: 0.93; text-transform: uppercase; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 1.5rem; }
+  .page-headline em { font-style: normal; color: var(--orange); }
+  .page-sub { font-size: 16px; line-height: 1.65; color: var(--cream80); max-width: 520px; margin-bottom: 2rem; }
+  .hero-block-pill { display: inline-flex; align-items: center; gap: 0.75rem; background: var(--cream10); border: 1px solid var(--cream15); border-radius: 24px; padding: 7px 16px; }
+  .block-pill-label { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream50); }
+  .block-pill-name  { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--cream); }
+  .block-pill-week  { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--orange); background: rgba(230,92,0,0.15); padding: 2px 8px; border-radius: 10px; }
+  .hero-rule { display: flex; align-items: center; padding: 0 2rem; }
+  .rule-line { flex: 1; height: 3px; background: var(--orange); }
+  .rule-dot  { width: 10px; height: 10px; border-radius: 50%; background: var(--cream); border: 2px solid var(--orange); flex-shrink: 0; }
+
+  /* ── STATS BAR ───────────────────────────────────────────── */
+  .stats-bar   { background: #1a3820; border-bottom: 1px solid rgba(249,248,246,0.08); padding: 1.5rem 0; }
+  .stats-grid  { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
+  .stat-item   { text-align: center; padding: 0.5rem 0; border-right: 1px solid rgba(249,248,246,0.08); }
+  .stat-item:last-child { border-right: none; }
+  .stat-value  { display: block; font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--cream); line-height: 1; margin-bottom: 4px; }
+  .stat-unit   { font-size: 16px; }
+  .stat-label  { font-size: 11px; color: var(--cream50); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
+
+  /* ── CURRENT BLOCK ───────────────────────────────────────── */
+  .block-section { padding: 3.5rem 0; background: var(--cream); border-bottom: 1px solid var(--forest15); }
+  .block-grid    { display: grid; grid-template-columns: 1fr 320px; gap: 4rem; align-items: start; }
+  .block-goal    { font-size: 16px; line-height: 1.65; color: var(--forest60); margin-top: 0.5rem; }
+  .block-focus   { background: #f0eeeb; border-radius: var(--radius-md); padding: 1.25rem 1.5rem; }
+  .block-focus-label { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 0.75rem; }
+  .block-focus-list  { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .block-focus-item  { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--forest); }
+  .focus-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 6px; }
+
+  /* ── GOALS ───────────────────────────────────────────────── */
+  .goals-section { background: var(--forest); padding: 4rem 0; }
+  .goals-list    { display: flex; flex-direction: column; gap: 0; }
+  .goal-item     { padding: 1.5rem 0; border-bottom: 1px solid var(--cream10); }
+  .goal-item:last-child { border-bottom: none; }
+  .goal-header   { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+  .goal-title-row { display: flex; align-items: center; gap: 0.75rem; }
+  .goal-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .goal-dot--done   { background: var(--orange); }
+  .goal-dot--active { background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
+  .goal-dot--future { background: var(--cream15); }
+  .goal-title    { font-family: var(--font-display); font-size: 20px; font-weight: 900; text-transform: uppercase; line-height: 1; }
+  .goal-item--done   .goal-title { color: var(--cream); }
+  .goal-item--active .goal-title { color: var(--cream); }
+  .goal-item--future .goal-title { color: var(--cream50); }
+  .goal-date     { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); white-space: nowrap; flex-shrink: 0; }
+  .goal-item--future .goal-date  { color: var(--cream50); }
+
+  .goal-progress-bar  { height: 4px; background: var(--cream10); border-radius: 2px; overflow: hidden; margin-bottom: 0.5rem; }
+  .goal-progress-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width 0.6s ease; }
+  .goal-item--done   .goal-progress-fill { background: var(--orange); }
+  .goal-item--active .goal-progress-fill { background: #4ade80; }
+  .goal-item--future .goal-progress-fill { background: var(--cream15); }
+
+  .goal-footer { display: flex; justify-content: space-between; align-items: center; }
+  .goal-note   { font-size: 13px; color: var(--cream50); }
+  .goal-pct    { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--cream50); }
+  .goal-item--done   .goal-pct { color: var(--orange); }
+  .goal-item--active .goal-pct { color: #4ade80; }
+
+  /* ── TRAINING LOG ────────────────────────────────────────── */
+  .log-section { padding: 4rem 0 5rem; background: #f7f6f3; }
+
+  .filter-bar   { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .filter-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--forest60); flex-shrink: 0; }
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .filter-btn   { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--forest60); background: #fff; border: 1.5px solid var(--forest15); padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover     { border-color: var(--forest); color: var(--forest); }
+  .filter-btn--active   { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+
+  .log-legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 12px; color: var(--forest60); margin-bottom: 1.5rem; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+  .legend-dot  { width: 8px; height: 8px; border-radius: 50%; }
+  .legend-dot--done { background: var(--orange); }
+  .feel-scale  { font-family: var(--font-display); font-size: 11px; font-weight: 600; }
+
+  .log-list { display: flex; flex-direction: column; gap: 0; }
+
+  /* Log entry */
+  .log-entry {
+    display: grid; grid-template-columns: 130px 1fr auto;
+    gap: 1.5rem; align-items: start;
+    padding: 1.5rem 1.25rem;
+    background: #fff; border: 1px solid var(--forest15);
+    border-radius: var(--radius-md); margin-bottom: 0.75rem;
+    position: relative; overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .log-entry:hover { box-shadow: 0 3px 14px rgba(30,63,32,0.07); }
+  .log-entry--highlight { border-left: 3px solid var(--orange); }
+  .log-entry.hidden { display: none; }
+
+  /* Meta column */
+  .entry-meta   { display: flex; flex-direction: column; gap: 0.4rem; padding-top: 2px; }
+  .entry-date   { font-size: 12px; color: var(--forest60); font-weight: 500; }
+  .entry-type   { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; align-self: flex-start; }
+
+  /* Type badge colours */
+  .type-run      { background: rgba(34,197,94,0.12);  color: #15803d; }
+  .type-cycle    { background: rgba(59,130,246,0.12); color: #1d4ed8; }
+  .type-strength { background: rgba(168,85,247,0.12); color: #7e22ce; }
+  .type-recovery { background: rgba(20,184,166,0.12); color: #0f766e; }
+  .type-race     { background: rgba(230,92,0,0.15);   color: var(--orange); }
+  .type-physio   { background: rgba(234,179,8,0.12);  color: #a16207; }
+
+  /* Content column */
+  .entry-content { display: flex; flex-direction: column; gap: 0.6rem; }
+  .entry-title   { font-family: var(--font-display); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--forest); line-height: 1.1; }
+  .entry-data    { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .data-chip     { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 3px; background: #f0eeeb; border: 1px solid var(--forest15); padding: 3px 10px; border-radius: 20px; color: var(--forest); }
+  .data-icon     { font-size: 11px; }
+
+  /* Feel chip colours */
+  .data-chip--feel { }
+  .feel-1 { background: rgba(239,68,68,0.1);  color: #991b1b; border-color: rgba(239,68,68,0.2); }
+  .feel-2 { background: rgba(249,115,22,0.1); color: #9a3412; border-color: rgba(249,115,22,0.2); }
+  .feel-3 { background: rgba(234,179,8,0.1);  color: #854d0e; border-color: rgba(234,179,8,0.2); }
+  .feel-4 { background: rgba(34,197,94,0.1);  color: #166534; border-color: rgba(34,197,94,0.2); }
+  .feel-5 { background: rgba(34,197,94,0.18); color: #14532d; border-color: rgba(34,197,94,0.3); }
+
+  .data-chip--lungs { background: rgba(230,92,0,0.08); color: var(--orange); border-color: rgba(230,92,0,0.2); }
+
+  .entry-summary { font-size: 14px; line-height: 1.7; color: var(--forest60); margin: 0; }
+
+  /* Highlight flag */
+  .entry-highlight-flag { font-size: 18px; color: var(--orange); padding-top: 2px; flex-shrink: 0; }
+
+  .empty-state { text-align: center; padding: 3rem; color: var(--forest60); font-size: 15px; }
+  .empty-state[hidden] { display: none; }
+
+  /* ── RACE SECTION ────────────────────────────────────────── */
+  .race-section { padding: 4rem 0; background: var(--cream); }
+  .race-grid    { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 1.25rem; }
+  .race-card    { background: #fff; border: 1px solid var(--forest15); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .race-card-top { display: flex; justify-content: space-between; align-items: center; }
+  .race-date    { font-size: 12px; color: var(--forest60); }
+  .race-result  { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); background: rgba(230,92,0,0.1); padding: 3px 8px; border-radius: 2px; }
+  .race-event   { font-family: var(--font-display); font-size: 20px; font-weight: 900; text-transform: uppercase; color: var(--forest); }
+  .race-location { font-size: 13px; color: var(--forest60); }
+  .race-data    { display: flex; gap: 1rem; }
+  .race-data span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--forest); }
+  .race-summary  { font-size: 14px; line-height: 1.65; color: var(--forest60); }
+
+  .race-empty       { border: 2px dashed var(--forest15); border-radius: var(--radius-md); padding: 3.5rem 2rem; text-align: center; }
+  .race-empty-inner { max-width: 400px; margin: 0 auto; }
+  .race-empty-icon  { font-size: 40px; display: block; margin-bottom: 1rem; }
+  .race-empty h3    { font-family: var(--font-display); font-size: 22px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.75rem; }
+  .race-empty p     { font-size: 15px; line-height: 1.7; color: var(--forest60); margin-bottom: 0.75rem; }
+  .race-empty-note  { font-size: 14px !important; }
+
+  /* ── HOW IT WORKS ────────────────────────────────────────── */
+  .how-section { background: var(--forest); padding: 4rem 0; }
+  .how-grid    { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+  .how-card    { background: var(--cream10); border: 1px solid var(--cream15); border-radius: var(--radius-md); padding: 1.25rem; }
+  .how-icon    { font-size: 22px; display: block; margin-bottom: 0.75rem; }
+  .how-card h3 { font-family: var(--font-display); font-size: 16px; font-weight: 900; text-transform: uppercase; color: var(--cream); margin-bottom: 0.5rem; }
+  .how-card p  { font-size: 13.5px; line-height: 1.65; color: var(--cream80); margin: 0; }
+
+  /* ── CTA ─────────────────────────────────────────────────── */
+  .cta-section { background: var(--cream); border-top: 1px solid var(--forest15); padding: 3.5rem 0; }
+  .cta-inner   { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem; }
+  .cta-headline { font-family: var(--font-display); font-size: 26px; font-weight: 900; text-transform: uppercase; color: var(--forest); margin-bottom: 0.4rem; }
+  .cta-sub     { font-size: 14px; color: var(--forest60); max-width: 400px; line-height: 1.6; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { background: var(--forest); border-top: 3px solid var(--orange); padding: 2.5rem 2rem 1.5rem; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand { flex: 1; min-width: 140px; }
+  .footer-brand .logo { font-size: 20px; display: inline-block; margin-bottom: 6px; }
+  .footer-tagline { font-size: 12px; color: var(--cream50); letter-spacing: 0.04em; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex: 2; }
+  .footer-nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cream50); text-decoration: none; transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--cream); }
+  .footer-nav a[href="/engine-room"] { color: var(--cream); }
+  .footer-social { display: flex; gap: 10px; align-items: center; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cream15); border-radius: 50%; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--cream50); text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+  .footer-social a:hover { color: var(--cream); border-color: var(--cream50); }
+  .footer-legal { font-size: 12px; color: rgba(249,248,246,0.3); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--cream10); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .nav-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--forest); flex-direction: column; align-items: flex-start; gap: 0; padding: 0.5rem 0 1rem; border-top: 1px solid var(--cream15); }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 0.75rem 2rem; font-size: 14px; }
+    .nav-active { border-bottom: none; padding-bottom: 0.75rem; }
+    .nav-pill   { border-radius: 0; background: transparent !important; color: var(--orange) !important; }
+
+    .stats-grid  { grid-template-columns: repeat(3,1fr); gap: 0; }
+    .stat-item   { padding: 0.75rem 0.5rem; border-right: none; border-bottom: 1px solid rgba(249,248,246,0.08); }
+    .stat-item:nth-child(odd) { border-right: 1px solid rgba(249,248,246,0.08); }
+
+    .block-grid  { grid-template-columns: 1fr; gap: 1.5rem; }
+    .log-entry   { grid-template-columns: 1fr; gap: 0.75rem; }
+    .entry-meta  { flex-direction: row; align-items: center; }
+    .how-grid    { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .cta-inner   { flex-direction: column; gap: 1.5rem; }
+    .footer-inner { flex-direction: column; gap: 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: repeat(2,1fr); }
+    .how-grid   { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // ── Mobile nav ─────────────────────────────────────────────
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+  const menu   = document.querySelector('.nav-menu')   as HTMLElement;
+  toggle?.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ── Session type filter ────────────────────────────────────
+  const filterBtns  = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const logEntries  = document.querySelectorAll<HTMLElement>('.log-entry');
+  const emptyState  = document.getElementById('empty-state');
+
+  function applyFilter(type: string) {
+    let visible = 0;
+    logEntries.forEach(entry => {
+      const match = type === 'All' || entry.dataset.type === type;
+      entry.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    if (emptyState) emptyState.hidden = visible > 0;
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('filter-btn--active'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('filter-btn--active');
+      btn.setAttribute('aria-pressed','true');
+      applyFilter(btn.dataset.type ?? 'All');
+    });
+  });
+</script>
