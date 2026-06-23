@@ -20,22 +20,22 @@ import Layout from '../layouts/Layout.astro';
 // Update this when your training phase changes.
 const currentBlock = {
   name:       "Base Building — Phase 1",
-  goal:       "Establish consistent aerobic base. Zone 2 focus. 4 sessions/week.",
-  weekNumber: 4,
+  goal:       "Establish consistent aerobic base. Zone 2 focus. The goal at this stage is to build conistency, confidence and a baseline. In the first 4 weeks, the ideal would be to bring my base speed back to a 10 min/mile (6:13 min/km). It should also be possible to do this pace over 10km. Additionally, I need to lose some weight. I am not massive, but have gotten slightly heavier due to a stressful phase of life, and low focus on food / exercise.",
+  weekNumber: 1,
   startDate:  "2025-05-05",
   endDate:    "2025-07-27",
-  focus:      ["Zone 2 running", "Airway clearance consistency", "Sleep tracking", "ACT pre-session habit"],
+  focus:      ["Zone 2 running", "Airway clearance consistency", "Sleep tracking", "Food Intake"],
 };
 
 // ── CUMULATIVE STATS ──────────────────────────────────────────────────────────
 // Update these monthly with real numbers.
 const stats = [
-  { value: "4",      label: "Weeks training",       unit: ""   },
-  { value: "18",     label: "Sessions completed",   unit: ""   },
-  { value: "87",     label: "Kilometres logged",    unit: "km" },
-  { value: "0",      label: "Exacerbations",        unit: ""   },
+  { value: "1",      label: "months training",      unit: ""   },
+  { value: "1",     label: "Sessions completed",   unit: ""   },
+  { value: "8",     label: "Kilometres logged",    unit: "km" },
+  { value: "1",      label: "Exacerbations",        unit: ""   },
   { value: "Zone 2", label: "Primary training zone",unit: ""   },
-  { value: "↑",      label: "Energy trend",         unit: ""   },
+  { value: "75",      label: "Current Weight",         unit: "kg"   },
 ];
 
 // ── TRAINING LOG ENTRIES ──────────────────────────────────────────────────────
@@ -46,19 +46,19 @@ const stats = [
 // zone: "Zone 1" | "Zone 2" | "Zone 3" | "Zone 4" | "Mixed"
 const logEntries = [
   {
-    id:       "2025-06-07-run",
-    date:     "2025-06-07",
+    id:       "2026-06-23-run",
+    date:     "2026-06-23",
     type:     "Run",
-    title:    "Week 4 — First 10km without stopping",
-    distance: 10.2,
-    duration: "1:04:30",
+    title:    "Week 0 — Starting the tracking.",
+    distance: 8,
+    duration: "51:15",
     zone:     "Zone 2",
-    feel:     4,
-    lungs:    "Post-clearance",
-    summary:  "Big milestone today. 10.2km, full Zone 2, no walking breaks. Held 138bpm average throughout. Lungs were clear after morning ACT — the pre-run clearance protocol is working. Slight fatigue in the final 2km but breathing stayed controlled.",
+    feel:     2,
+    lungs:    "Heavy",
+    summary:  "Currently visiting Kyoto Japan and did some longer distance. Relatively high humidity and warmer than usual. A lot of post-travel mucus combined with poort sleep made this a tough run.",
     highlight: true,
   },
-  {
+  /*{
     id:       "2025-06-05-cycle",
     date:     "2025-06-05",
     type:     "Cycle",
@@ -146,9 +146,9 @@ const logEntries = [
     zone:     "Zone 2",
     feel:     3,
     lungs:    "Some mucus",
-    summary:  "Week one. 5km. That's where we start. The lungs are what they are. The goal is what it is. The distance between them is the project. First session logged.",
+    summary:  "Week one. 5km. That's where we start. The lungs are what they are. The goal is what it is. The distance between them is the project. First session logged. ",
     highlight: true,
-  },
+  },*/
 ];
 
 // ── RACE REPORTS ──────────────────────────────────────────────────────────────
@@ -178,36 +178,43 @@ const raceReports: {
 
 // ── GOAL TRACKER ──────────────────────────────────────────────────────────────
 // Update progress values as milestones are hit.
-// progress: 0–100 (percentage)
+// progress: 0–100 (percentage) / done, active, or future
 const goals = [
   {
-    title:    "Run 10km non-stop",
-    status:   "done",
-    progress: 100,
-    date:     "Achieved June 7, 2025",
-    note:     "Week 4. First real milestone.",
+    title:    "Run 10km non-stop (at 10 min/mile)",
+    status:   "active",
+    progress: 5,
+    date:     "Target: End of July 2026",
+    note:     "Month 1. First real milestone.",
   },
   {
-    title:    "Complete a 21.1km half marathon",
+    title:    "Reduce weight to 72kg",
     status:   "active",
-    progress: 15,
-    date:     "Target: Late 2025",
+    progress: 0,
+    date:     "Target: End of July 2026",
     note:     "Base phase underway. Building toward this steadily.",
   },
+  {
+    title:    "Complete a 21.1km half marathon (at least < 2:00, ideally < 1:45)",
+    status:   "future",
+    progress: 0,
+    date:     "Target: Late 2026",
+    note:     "Base phase underway. Building toward this steadily.",
+  },/*
   {
     title:    "Complete a full marathon (42.2km)",
     status:   "future",
     progress: 0,
-    date:     "Target: 2026",
+    date:     "Target: Summer 2027",
     note:     "The stepping stone before ultra distance.",
   },
   {
     title:    "Complete an ultramarathon (50km+)",
     status:   "future",
     progress: 0,
-    date:     "Target: 2027",
+    date:     "Target: End of 2027",
     note:     "The big one. The reason this site exists.",
-  },
+  },*/
 ];
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -227,7 +234,7 @@ const typeColors: Record<string, string> = {
 const feelLabels: Record<number, string> = { 1: "Rough", 2: "Hard", 3: "Okay", 4: "Good", 5: "Great" };
 const feelColors: Record<number, string> = { 1: "feel-1", 2: "feel-2", 3: "feel-3", 4: "feel-4", 5: "feel-5" };
 
-const allTypes = ["All", "Run", "Cycle", "Strength", "Physio", "Recovery", "Race"];
+const allTypes = ["All", "Run", "Cycle", "Strength", "Recovery", "Race"];
 ---
 
 <Layout
@@ -261,15 +268,15 @@ const allTypes = ["All", "Run", "Cycle", "Strength", "Physio", "Recovery", "Race
       <h1 id="er-heading" class="page-headline">The Engine<br><em>Room</em></h1>
       <p class="page-sub">
         One person. Bronchiectasis. A target that most people would call unrealistic.
-        Every session logged, every setback recorded, every milestone documented.
-        This is what training with BX actually looks like — week by week.
+        Every session logged, setback recorded, and milestone documented.
+        This is what training with BX actually looks like.
       </p>
 
       <!-- Current block pill -->
       <div class="hero-block-pill" aria-label="Current training block">
         <span class="block-pill-label" aria-hidden="true">Current block</span>
         <span class="block-pill-name">{currentBlock.name}</span>
-        <span class="block-pill-week">Week {currentBlock.weekNumber}</span>
+        <span class="block-pill-week">Month {currentBlock.weekNumber}</span>
       </div>
     </div>
     <div class="hero-rule" aria-hidden="true">
@@ -484,8 +491,8 @@ const allTypes = ["All", "Run", "Cycle", "Strength", "Physio", "Recovery", "Race
             <h3>First event pending</h3>
             <p>
               Race reports will appear here after the first event is completed.
-              The current training block is building toward a first 10K race
-              in the second half of 2025.
+              The current training block is building toward a first 10K completion,
+              likely with a race linked to it.
             </p>
             <p class="race-empty-note">
               Follow the training build in the log above — or
