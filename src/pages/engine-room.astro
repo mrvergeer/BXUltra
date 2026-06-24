@@ -31,8 +31,8 @@ const currentBlock = {
 // Update these monthly with real numbers.
 const stats = [
   { value: "1",      label: "months training",      unit: ""   },
-  { value: "1",     label: "Sessions completed",   unit: ""   },
-  { value: "8",     label: "Kilometres logged",    unit: "km" },
+  { value: "2",     label: "Sessions completed",   unit: ""   },
+  { value: "16.2",     label: "Kilometres logged",    unit: "km" },
   { value: "1",      label: "Exacerbations",        unit: ""   },
   { value: "Zone 2", label: "Primary training zone",unit: ""   },
   { value: "75",      label: "Current Weight",         unit: "kg"   },
@@ -46,6 +46,18 @@ const stats = [
 // zone: "Zone 1" | "Zone 2" | "Zone 3" | "Zone 4" | "Mixed"
 const logEntries = [
   {
+    id:       "2026-06-24-cycle",
+    date:     "2026-06-24",
+    type:     "Run",
+    title:    "Week 0 - Another 8km in the books.",
+    distance:  8.2,
+    duration: "51:44",
+    zone:     "Zone 2",
+    feel:     3,
+    lungs:    "Some mucus",
+    summary:  "Second run in Kyoto along the river. Slightly better than yesterday given it is less warm. Need to remind myself to not try and go fast. Lungs were better than yesterday, some coughing necessary.",
+    highlight: false,
+  },{
     id:       "2026-06-23-run",
     date:     "2026-06-23",
     type:     "Run",
@@ -58,19 +70,7 @@ const logEntries = [
     summary:  "Currently visiting Kyoto Japan and did some longer distance. Relatively high humidity and warmer than usual. A lot of post-travel mucus combined with poort sleep made this a tough run.",
     highlight: true,
   },
-  /*{
-    id:       "2025-06-05-cycle",
-    date:     "2025-06-05",
-    type:     "Cycle",
-    title:    "60 min Zone 2 indoor — recovery focus",
-    distance: 28,
-    duration: "1:00:00",
-    zone:     "Zone 2",
-    feel:     3,
-    lungs:    "Some mucus",
-    summary:  "Sputum slightly increased this morning — yellow-tinged, which I'm watching. Did a longer ACT session before getting on the bike. Kept HR strictly below 130. Everything felt manageable. No fever, energy was okay. Monitoring closely.",
-    highlight: false,
-  },
+  /*
   {
     id:       "2025-06-03-run",
     date:     "2025-06-03",
